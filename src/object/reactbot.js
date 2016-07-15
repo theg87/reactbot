@@ -1,4 +1,7 @@
+import logger from '../util/logger';
 import room from './room';
+
+const reactbotLogger = logger('Reactbot');
 
 // Cardinal directions in degrees
 const NORTH = 0;
@@ -12,10 +15,12 @@ class Reactbot {
     this.x = 0;
     this.y = 0;
     this.rotation = NORTH;
+    this.debug = false;
   }
 
   init(settings) {
     this.language = settings.language;
+    this.debug = settings.debug;
     this.rotation = NORTH;
 
     const startPosition = room.getStartPosition();
@@ -73,8 +78,9 @@ class Reactbot {
     if (room.contains(newPosition)) {
       this.x = newPosition.x;
       this.y = newPosition.y;
+      this.log(`Moving to position ${this.x} ${this.y}`);
     } else {
-      console.log('Reached a wall');
+      if (this.debug) reactbotLogger('Reached a wall. I\'m a robot, not a ghost!');
     }
   }
 
@@ -92,33 +98,38 @@ class Reactbot {
         this.rotation += 90;
       }
     }
+
+    if (this.debug) reactbotLogger(`Turning ${direction}, now facing ${this.getCardinalDirection(this.rotation)}`);
   }
 
-  getCardinalDirection(rotation) {
-    let shortCode;
+  getCardinalDirection(rotation, shortcode) {
+    let cardinalDirection;
 
     switch (rotation) {
       case NORTH:
-        shortCode = 'N';
+        cardinalDirection = shortcode ? 'N' : 'north';
         break;
       case EAST:
-        shortCode = 'E';
+        cardinalDirection = shortcode ? 'E' : 'east';
         break;
       case SOUTH:
-        shortCode = 'S';
+        cardinalDirection = shortcode ? 'S' : 'south';
         break;
       case WEST:
-        shortCode = 'W';
+        cardinalDirection = shortcode ? 'W' : 'west';
         break;
       default:
-        shortCode = 'N';
+        cardinalDirection = shortcode ? 'N' : 'north';
     }
 
-    return shortCode;
+    return cardinalDirection;
   }
 
   report(x, y, rotation) {
-    const cardinalDirection = this.getCardinalDirection(rotation);
+    const cardinalDirection = this.getCardinalDirection(rotation, true);
+
+    if (this.debug) reactbotLogger(`Final report: ${x} ${y} ${cardinalDirection}`);
+
     return `${x} ${y} ${cardinalDirection}`;
   }
 }

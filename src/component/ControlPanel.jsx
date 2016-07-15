@@ -20,11 +20,13 @@ export default class ControlPanel extends React.Component {
       language: 'sv',
       instructions: [],
       report: '',
+      debug: false,
     };
   }
 
   handleChange(evt, type) {
-    this.setState({ [type]: evt.target.value });
+    const value = type === 'debug' ? evt.target.checked : evt.target.value;
+    this.setState({ [type]: value });
   }
 
   handleSubmit(evt) {
@@ -37,6 +39,7 @@ export default class ControlPanel extends React.Component {
       startPosY,
       language,
       instructions,
+      debug,
     } = this.state;
 
     const instructionString = _reduce(instructions, (result, instruction) => {
@@ -55,6 +58,7 @@ export default class ControlPanel extends React.Component {
     const report = reactbot.init({
       language,
       instructions: instructionString,
+      debug,
     });
 
     this.setState({ report });
@@ -82,6 +86,7 @@ export default class ControlPanel extends React.Component {
       language,
       instructions,
       report,
+      debug,
     } = this.state;
 
     const f = t('F', language);
@@ -177,6 +182,19 @@ export default class ControlPanel extends React.Component {
               Reset
             </button>
           </fieldset>
+
+          <label htmlFor="debug">Debug mode</label>
+          <input
+            id="debug"
+            type="checkbox"
+            value={this.state.debug}
+            onChange={(evt) => this.handleChange(evt, 'debug')}
+          />
+
+          {
+            debug &&
+              <p>Open the console in your browser to see log messages</p>
+          }
 
           <button type="submit">Run instructions</button>
 
