@@ -1,17 +1,13 @@
-html,
-body {
+header {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background: $color-header-bg;
+}
+
+h1 {
   margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: Roboto, Tahoma, Arial, Helvetica, sans-serif;
-}
-
-.reset-button {
-  display: none;
-
-  &.is-visible {
-    display: inline-block;
-  }
+  font-weight: 400;
+  font-size: 1.5rem;
+  color: $color-main-heading;
 }

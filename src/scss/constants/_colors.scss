@@ -1,0 +1,18 @@
+$rb-light-gray: #f5f5f5;
+$rb-edge-gray: #eaeaea;
+$rb-blue-gray: #546e7a;
+$rb-cyan: #00acc1;
+$rb-white: #fff;
+
+/*-------------------------------------------------------------------*/
+
+/*** Header ***/
+$color-header-bg: $rb-blue-gray;
+$color-main-heading: $rb-white;
+
+/*** Control panel ***/
+$color-control-panel-border: $rb-edge-gray;
+$color-control-panel-bg: $rb-light-gray;
+$color-control-panel-button-bg: $rb-cyan;
+$color-control-panel-button-text: $rb-white;
+$color-control-panel-button-highlight: lighten($rb-cyan, 5%);

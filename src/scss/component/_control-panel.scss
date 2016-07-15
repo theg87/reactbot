@@ -1,0 +1,45 @@
+.control-panel {
+  padding: 0.5rem;
+
+  .reset-button {
+    display: none;
+
+    &.is-visible {
+      display: inline-block;
+    }
+  }
+
+  fieldset {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid $color-control-panel-border;
+    background: $color-control-panel-bg;
+  }
+
+  legend {
+    margin-bottom: 2rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid $color-control-panel-border;
+    font-size: 1.25rem;
+  }
+
+  button {
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    border-radius: 2px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+    color: $color-control-panel-button-text;
+    background: $color-control-panel-button-bg;
+
+    &:hover,
+    &:focus {
+      background: $color-control-panel-button-highlight;
+    }
+  }
+
+  .instructions {
+    button {
+      margin-right: 0.5rem;
+    }
+  }
+}

@@ -94,7 +94,7 @@ export default class ControlPanel extends React.Component {
     const r = t('R', language);
 
     return (
-      <div>
+      <div className="control-panel">
         <form onSubmit={evt => this.handleSubmit(evt)}>
           <fieldset>
             <legend>Configure room</legend>
@@ -154,7 +154,7 @@ export default class ControlPanel extends React.Component {
             </select>
           </fieldset>
 
-          <fieldset>
+          <fieldset className="instructions">
             <legend>Reactbot instructions</legend>
 
             <p>Click the buttons below to add instructions</p>
