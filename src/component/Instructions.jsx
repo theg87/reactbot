@@ -6,17 +6,22 @@ export default class Instructions extends React.Component {
     const { instructions, show, language } = this.props;
 
     return (
-      <ul className="instructions">
+      <div>
         {
-          show && instructions.map(instruction => {
-            return (
-              <li key={instruction.id}>
-                {t(instruction.value, language)}
-              </li>
-            );
-          })
+          show &&
+            <ul className="instructions">
+              {
+                instructions.map(instruction => {
+                  return (
+                    <li key={instruction.id}>
+                      {t(instruction.value, language)}
+                    </li>
+                  );
+                })
+              }
+            </ul>
         }
-      </ul>
+      </div>
     );
   }
 }

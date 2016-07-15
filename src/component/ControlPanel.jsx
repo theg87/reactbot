@@ -1,6 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
+import _reduce from 'lodash/reduce';
 import t from '../util/translate';
+import room from '../object/room';
+import reactbot from '../object/reactbot';
 import Instructions from './Instructions.jsx';
 
 let instructionId = 0;
@@ -11,9 +14,12 @@ export default class ControlPanel extends React.Component {
 
     this.state = {
       shape: 'square',
-      size: 1,
+      size: 5,
+      startPosX: 1,
+      startPosY: 1,
       language: 'sv',
       instructions: [],
+      report: '',
     };
   }
 
@@ -23,9 +29,35 @@ export default class ControlPanel extends React.Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    let instructions = '';
-    this.state.instructions.forEach(i => instructions += t(i.value, this.state.language));
-    console.log(this.state, instructions);
+
+    const { 
+      shape,
+      size,
+      startPosX,
+      startPosY,
+      language,
+      instructions,
+    } = this.state;
+
+    const instructionString = _reduce(instructions, (result, instruction) => {
+      return result + t(instruction.value, language);
+    }, '');
+
+    room.init({
+      shape,
+      size,
+      startPosition: {
+        x: parseInt(startPosX, 10),
+        y: parseInt(startPosY, 10),
+      },
+    });
+
+    const report = reactbot.init({
+      language,
+      instructions: instructionString,
+    });
+
+    this.setState({ report });
   }
 
   addInstruction(value) {
@@ -42,7 +74,19 @@ export default class ControlPanel extends React.Component {
   }
 
   render() {
-    const { state } = this;
+    const {
+      shape,
+      size,
+      startPosX,
+      startPosY,
+      language,
+      instructions,
+      report,
+    } = this.state;
+
+    const f = t('F', language);
+    const l = t('L', language);
+    const r = t('R', language);
 
     return (
       <div>
@@ -53,7 +97,7 @@ export default class ControlPanel extends React.Component {
             <label htmlFor="shape">Shape</label>
             <select
               id="shape"
-              value={state.shape}
+              value={shape}
               onChange={evt => this.handleChange(evt, 'shape')}
             >
               <option value="square">Square</option>
@@ -62,11 +106,32 @@ export default class ControlPanel extends React.Component {
 
             <label htmlFor="size">Size</label>
             <input
+              id="size"
               type="number"
               min="1"
               max="100"
-              value={state.size}
+              value={size}
               onChange={evt => this.handleChange(evt, 'size')}
+            />
+
+            <h2>Start position</h2>
+
+            <label htmlFor="x">x</label>
+            <input
+              id="x"
+              type="number"
+              min="0"
+              value={startPosX}
+              onChange={evt => this.handleChange(evt, 'startPosX')}
+            />
+
+            <label htmlFor="y">y</label>
+            <input
+              id="y"
+              type="number"
+              min="0"
+              value={startPosY}
+              onChange={evt => this.handleChange(evt, 'startPosY')}
             />
           </fieldset>
 
@@ -76,7 +141,7 @@ export default class ControlPanel extends React.Component {
             <label htmlFor="language">Language</label>
             <select
               id="language"
-              value={state.language}
+              value={language}
               onChange={evt => this.handleChange(evt, 'language')}
             >
               <option value="sv">Swedish</option>
@@ -87,34 +152,38 @@ export default class ControlPanel extends React.Component {
           <fieldset>
             <legend>Reactbot instructions</legend>
 
-            <button type="button" onClick={() => this.addInstruction('F')}>
-              {t('F', state.language)}
-            </button>
+            <p>Click the buttons below to add instructions</p>
+            <p>
+              {f} = Go forward<br />
+              {l} = Turn left<br />
+              {r} = Turn right
+            </p>
 
-            <button type="button" onClick={() => this.addInstruction('L')}>
-              {t('L', state.language)}
-            </button>
-
-            <button type="button" onClick={() => this.addInstruction('R')}>
-              {t('R', state.language)}
-            </button>
+            <button type="button" onClick={() => this.addInstruction('F')}>{f}</button>
+            <button type="button" onClick={() => this.addInstruction('L')}>{l}</button>
+            <button type="button" onClick={() => this.addInstruction('R')}>{r}</button>
 
             <Instructions
-              instructions={state.instructions}
-              show={state.instructions.length > 0}
-              language={state.language}
+              instructions={instructions}
+              show={instructions.length > 0}
+              language={language}
             />
 
-            <button 
+            <button
               type="button"
               onClick={() => this.resetInstructions()}
-              className={cx('reset-button', { 'is-visible': state.instructions.length })}
+              className={cx('reset-button', { 'is-visible': instructions.length })}
             >
-              Reset instructions
+              Reset
             </button>
           </fieldset>
 
           <button type="submit">Run instructions</button>
+
+          {
+            report &&
+              <p>{report}</p>
+          }
         </form>
       </div>
     );
