@@ -56,7 +56,7 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	__webpack_require__(173);
+	__webpack_require__(174);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21110,6 +21110,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _ControlPanel = __webpack_require__(173);
+
+	var _ControlPanel2 = _interopRequireDefault(_ControlPanel);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21137,7 +21141,8 @@
 	          'h1',
 	          null,
 	          'Reactbot'
-	        )
+	        ),
+	        _react2.default.createElement(_ControlPanel2.default, null)
 	      );
 	    }
 	  }]);
@@ -21151,13 +21156,177 @@
 /* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ControlPanel = function (_React$Component) {
+	  _inherits(ControlPanel, _React$Component);
+
+	  function ControlPanel(props) {
+	    _classCallCheck(this, ControlPanel);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ControlPanel).call(this, props));
+
+	    _this.state = {
+	      shape: 'square',
+	      size: 1,
+	      language: 'sv'
+	    };
+	    return _this;
+	  }
+
+	  _createClass(ControlPanel, [{
+	    key: 'handleChange',
+	    value: function handleChange(evt, type) {
+	      this.setState(_defineProperty({}, type, evt.target.value));
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(evt) {
+	      evt.preventDefault();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var state = this.state;
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'form',
+	          { onSubmit: function onSubmit(evt) {
+	              return _this2.handleSubmit(evt);
+	            } },
+	          _react2.default.createElement(
+	            'fieldset',
+	            null,
+	            _react2.default.createElement(
+	              'legend',
+	              null,
+	              'Configure room'
+	            ),
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'shape' },
+	              'Shape'
+	            ),
+	            _react2.default.createElement(
+	              'select',
+	              {
+	                id: 'shape',
+	                value: state.shape,
+	                onChange: function onChange(evt) {
+	                  return _this2.handleChange(evt, 'shape');
+	                }
+	              },
+	              _react2.default.createElement(
+	                'option',
+	                { value: 'square' },
+	                'Square'
+	              ),
+	              _react2.default.createElement(
+	                'option',
+	                { value: 'circular' },
+	                'Circular'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'size' },
+	              'Size'
+	            ),
+	            _react2.default.createElement('input', {
+	              type: 'number',
+	              min: '1',
+	              max: '100',
+	              value: state.size,
+	              onChange: function onChange(evt) {
+	                return _this2.handleChange(evt, 'size');
+	              }
+	            })
+	          ),
+	          _react2.default.createElement(
+	            'fieldset',
+	            null,
+	            _react2.default.createElement(
+	              'legend',
+	              null,
+	              'Configure Reactbot'
+	            ),
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'language' },
+	              'Language'
+	            ),
+	            _react2.default.createElement(
+	              'select',
+	              {
+	                id: 'language',
+	                value: state.language,
+	                onChange: function onChange(evt) {
+	                  return _this2.handleChange(evt, 'language');
+	                }
+	              },
+	              _react2.default.createElement(
+	                'option',
+	                { value: 'sv' },
+	                'Swedish'
+	              ),
+	              _react2.default.createElement(
+	                'option',
+	                { value: 'en' },
+	                'English'
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { type: 'submit' },
+	            'Run instructions'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ControlPanel;
+	}(_react2.default.Component);
+
+	exports.default = ControlPanel;
+
+/***/ },
+/* 174 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(174);
+	var content = __webpack_require__(175);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(176)(content, {});
+	var update = __webpack_require__(177)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21174,10 +21343,10 @@
 	}
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(175)();
+	exports = module.exports = __webpack_require__(176)();
 	// imports
 
 
@@ -21188,7 +21357,7 @@
 
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports) {
 
 	/*
@@ -21244,7 +21413,7 @@
 
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
