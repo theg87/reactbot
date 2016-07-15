@@ -56,7 +56,7 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	__webpack_require__(174);
+	__webpack_require__(177);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21168,6 +21168,18 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _classnames = __webpack_require__(174);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _translate = __webpack_require__(175);
+
+	var _translate2 = _interopRequireDefault(_translate);
+
+	var _Instructions = __webpack_require__(176);
+
+	var _Instructions2 = _interopRequireDefault(_Instructions);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -21177,6 +21189,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var instructionId = 0;
 
 	var ControlPanel = function (_React$Component) {
 	  _inherits(ControlPanel, _React$Component);
@@ -21189,7 +21203,8 @@
 	    _this.state = {
 	      shape: 'square',
 	      size: 1,
-	      language: 'sv'
+	      language: 'sv',
+	      instructions: []
 	    };
 	    return _this;
 	  }
@@ -21202,14 +21217,39 @@
 	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(evt) {
+	      var _this2 = this;
+
 	      evt.preventDefault();
+	      var instructions = '';
+	      this.state.instructions.forEach(function (i) {
+	        return instructions += (0, _translate2.default)(i.value, _this2.state.language);
+	      });
+	      console.log(this.state, instructions);
+	    }
+	  }, {
+	    key: 'addInstruction',
+	    value: function addInstruction(value) {
+	      this.setState(function (state) {
+	        return {
+	          instructions: state.instructions.concat([{
+	            id: instructionId++,
+	            value: value
+	          }])
+	        };
+	      });
+	    }
+	  }, {
+	    key: 'resetInstructions',
+	    value: function resetInstructions() {
+	      this.setState({ instructions: [] });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      var state = this.state;
+
 
 	      return _react2.default.createElement(
 	        'div',
@@ -21217,7 +21257,7 @@
 	        _react2.default.createElement(
 	          'form',
 	          { onSubmit: function onSubmit(evt) {
-	              return _this2.handleSubmit(evt);
+	              return _this3.handleSubmit(evt);
 	            } },
 	          _react2.default.createElement(
 	            'fieldset',
@@ -21238,7 +21278,7 @@
 	                id: 'shape',
 	                value: state.shape,
 	                onChange: function onChange(evt) {
-	                  return _this2.handleChange(evt, 'shape');
+	                  return _this3.handleChange(evt, 'shape');
 	                }
 	              },
 	              _react2.default.createElement(
@@ -21263,7 +21303,7 @@
 	              max: '100',
 	              value: state.size,
 	              onChange: function onChange(evt) {
-	                return _this2.handleChange(evt, 'size');
+	                return _this3.handleChange(evt, 'size');
 	              }
 	            })
 	          ),
@@ -21286,7 +21326,7 @@
 	                id: 'language',
 	                value: state.language,
 	                onChange: function onChange(evt) {
-	                  return _this2.handleChange(evt, 'language');
+	                  return _this3.handleChange(evt, 'language');
 	                }
 	              },
 	              _react2.default.createElement(
@@ -21299,6 +21339,52 @@
 	                { value: 'en' },
 	                'English'
 	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'fieldset',
+	            null,
+	            _react2.default.createElement(
+	              'legend',
+	              null,
+	              'Reactbot instructions'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'button', onClick: function onClick() {
+	                  return _this3.addInstruction('F');
+	                } },
+	              (0, _translate2.default)('F', state.language)
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'button', onClick: function onClick() {
+	                  return _this3.addInstruction('L');
+	                } },
+	              (0, _translate2.default)('L', state.language)
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'button', onClick: function onClick() {
+	                  return _this3.addInstruction('R');
+	                } },
+	              (0, _translate2.default)('R', state.language)
+	            ),
+	            _react2.default.createElement(_Instructions2.default, {
+	              instructions: state.instructions,
+	              show: state.instructions.length > 0,
+	              language: state.language
+	            }),
+	            _react2.default.createElement(
+	              'button',
+	              {
+	                type: 'button',
+	                onClick: function onClick() {
+	                  return _this3.resetInstructions();
+	                },
+	                className: (0, _classnames2.default)('reset-button', { 'is-visible': state.instructions.length })
+	              },
+	              'Reset instructions'
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -21320,13 +21406,174 @@
 /* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+
+	(function () {
+		'use strict';
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = [];
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+
+			return classes.join(' ');
+		}
+
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 175 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = translate;
+	function translate(string, language) {
+	  if (language === 'en') return string;
+
+	  var translatedString = void 0;
+
+	  switch (string) {
+	    case 'F':
+	      translatedString = 'G';
+	      break;
+	    case 'L':
+	      translatedString = 'V';
+	      break;
+	    case 'R':
+	      translatedString = 'H';
+	      break;
+	    default:
+	      translatedString = string;
+	  }
+
+	  return translatedString;
+	}
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _translate = __webpack_require__(175);
+
+	var _translate2 = _interopRequireDefault(_translate);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Instructions = function (_React$Component) {
+	  _inherits(Instructions, _React$Component);
+
+	  function Instructions() {
+	    _classCallCheck(this, Instructions);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Instructions).apply(this, arguments));
+	  }
+
+	  _createClass(Instructions, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var instructions = _props.instructions;
+	      var show = _props.show;
+	      var language = _props.language;
+
+
+	      return _react2.default.createElement(
+	        'ul',
+	        { className: 'instructions' },
+	        show && instructions.map(function (instruction) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: instruction.id },
+	            (0, _translate2.default)(instruction.value, language)
+	          );
+	        })
+	      );
+	    }
+	  }]);
+
+	  return Instructions;
+	}(_react2.default.Component);
+
+	exports.default = Instructions;
+
+
+	Instructions.propTypes = {
+	  show: _react2.default.PropTypes.bool,
+	  instructions: _react2.default.PropTypes.arrayOf(_react2.default.PropTypes.shape({
+	    id: _react2.default.PropTypes.number,
+	    value: _react2.default.PropTypes.string
+	  })),
+	  language: _react2.default.PropTypes.string
+	};
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(175);
+	var content = __webpack_require__(178);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(177)(content, {});
+	var update = __webpack_require__(180)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21343,21 +21590,21 @@
 	}
 
 /***/ },
-/* 175 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(176)();
+	exports = module.exports = __webpack_require__(179)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "html,\nbody {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  font-family: Roboto, Tahoma, Arial, Helvetica, sans-serif; }\n", ""]);
+	exports.push([module.id, "html,\nbody {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  font-family: Roboto, Tahoma, Arial, Helvetica, sans-serif; }\n\n.reset-button {\n  display: none; }\n  .reset-button.is-visible {\n    display: inline-block; }\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 176 */
+/* 179 */
 /***/ function(module, exports) {
 
 	/*
@@ -21413,7 +21660,7 @@
 
 
 /***/ },
-/* 177 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

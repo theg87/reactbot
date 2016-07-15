@@ -5,6 +5,7 @@
     "dev": "webpack-dev-server --colors --progress --hot"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "react": "^15.0.2",
     "react-dom": "^15.0.2"
   },

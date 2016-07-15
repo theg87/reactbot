@@ -7,3 +7,11 @@ body {
 body {
   font-family: Roboto, Tahoma, Arial, Helvetica, sans-serif;
 }
+
+.reset-button {
+  display: none;
+
+  &.is-visible {
+    display: inline-block;
+  }
+}
