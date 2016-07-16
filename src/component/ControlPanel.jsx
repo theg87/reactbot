@@ -2,9 +2,13 @@ import React from 'react';
 import cx from 'classnames';
 import _reduce from 'lodash/reduce';
 import t from '../util/translate';
-import room from '../object/room';
-import reactbot from '../object/reactbot';
+import Room from '../object/Room';
+import Reactbot from '../object/Reactbot';
 import Instructions from './Instructions.jsx';
+
+
+// Create new instance of Reactbot
+const reactbot = new Reactbot();
 
 let instructionId = 0;
 
@@ -46,17 +50,16 @@ export default class ControlPanel extends React.Component {
       return result + t(instruction.value, language);
     }, '');
 
-    room.configure({
-      shape,
-      size,
-      startPosition: {
-        x: parseInt(startPosX, 10),
-        y: parseInt(startPosY, 10),
-      },
-    });
+    const startPosition = {
+      x: parseInt(startPosX, 10),
+      y: parseInt(startPosY, 10),
+    };
+
+    const room = new Room(shape, size, startPosition);
 
     reactbot.configure({
       language,
+      room,
       debug,
     });
 

@@ -1,31 +1,29 @@
 import test from 'tape';
-import room from './room';
+import Room from './Room';
 
 test('Room', t => {
-  t.test('will have configurable startPosition property', t => {
-    t.deepEqual(room.getStartPosition(), { x: 0, y: 0 }, 'Has correct default values');
+  t.test('will have configurable startPosition property with default values', t => {
+    let room = new Room();
+
+    t.deepEqual(room.getStartPosition(), { x: 1, y: 1 }, 'Square room has correct default value');
+
+    room = new Room('circular');
+
+    t.deepEqual(room.getStartPosition(), { x: 0, y: 0 }, 'Circular room has correct default value');
     
-    const newStartPosition = { x: 3, y: 5 };
+    const startPosition = { x: 3, y: 5 };
 
-    room.configure({
-      startPosition: newStartPosition,
-    });
+    room = new Room('square', 1, startPosition);
 
-    t.deepEqual(room.getStartPosition(), newStartPosition, 'startPosition is configured correctly');
+    t.deepEqual(room.getStartPosition(), startPosition, 'Property startPosition is configured correctly');
 
     t.end();
   });
 
   t.test('will contain correct points', t => {
-    const startPosition = { x: 0, y: 0 };
-
     t.comment('square room, size 2x2');
 
-    room.configure({
-      startPosition,
-      shape: 'square',
-      size: 2,
-    });
+    let room = new Room('square', 2);
 
     let expectedPoints = [
       { x: 1, y: 2 },
@@ -35,7 +33,7 @@ test('Room', t => {
     ];
 
     expectedPoints.forEach(point => {
-      t.ok(room.contains(point), 'Contains expected point');
+      t.ok(room.contains(point), `Contains point (${point.x}, ${point.y})`);
     });
 
     let unexpectedPoints = [
@@ -46,16 +44,12 @@ test('Room', t => {
     ];
 
     unexpectedPoints.forEach(point => {
-      t.notOk(room.contains(point), 'Does not contain unexpected point');
+      t.notOk(room.contains(point), `Does not contain point (${point.x}, ${point.y})`);
     });
 
     t.comment('circular room, radius 5');
 
-    room.configure({
-      startPosition,
-      shape: 'circular',
-      size: 5,
-    });
+    room = new Room('circular', 5);
 
     expectedPoints = [
       { x: 0, y: 0 },
@@ -80,7 +74,7 @@ test('Room', t => {
     ];
 
     expectedPoints.forEach(point => {
-      t.ok(room.contains(point), 'Contains expected point');
+      t.ok(room.contains(point), `Contains point (${point.x}, ${point.y})`);
     });
 
     unexpectedPoints = [
@@ -101,7 +95,7 @@ test('Room', t => {
     ];
 
     unexpectedPoints.forEach(point => {
-      t.notOk(room.contains(point), 'Does not contain unexpected point');
+      t.notOk(room.contains(point), `Does not contain point (${point.x}, ${point.y})`);
     });
 
     t.end();

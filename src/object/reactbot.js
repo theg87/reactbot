@@ -1,5 +1,4 @@
 import logger from '../util/logger';
-import room from './room';
 
 const reactbotLogger = logger('Reactbot');
 
@@ -9,19 +8,21 @@ const EAST = 90;
 const SOUTH = 180;
 const WEST = 270;
 
-class Reactbot {
+export default class Reactbot {
   constructor() {
     this.language = 'sv';
     this.x = 0;
     this.y = 0;
     this.rotation = NORTH;
+    this.room = null;
     this.debug = false;
   }
 
-  configure(settings) {
-    this.language = settings.language;
-    this.debug = settings.debug;
+  configure({ language, room, debug }) {
+    this.language = language;
+    this.debug = debug;
     this.rotation = NORTH;
+    this.room = room;
 
     const startPosition = room.getStartPosition();
     this.x = startPosition.x;
@@ -73,10 +74,10 @@ class Reactbot {
         break;
     }
 
-    if (room.contains(newPosition)) {
+    if (this.room.contains(newPosition)) {
       this.x = newPosition.x;
       this.y = newPosition.y;
-      reactbotLogger(`Moving to position ${this.x} ${this.y}`);
+      if (this.debug) reactbotLogger(`Moving to position ${this.x} ${this.y}`);
     } else {
       if (this.debug) reactbotLogger('Reached a wall. I\'m a robot, not a ghost!');
     }
@@ -132,5 +133,3 @@ class Reactbot {
     return finalReport;
   }
 }
-
-export default new Reactbot();

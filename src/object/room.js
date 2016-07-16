@@ -1,9 +1,17 @@
 import _some from 'lodash/some';
 
-class Room {
-  constructor() {
-    this.startPosition = { x: 0, y: 0 };
-    this.points = [];
+export default class Room {
+  constructor(shape = 'square', size = 1, startPosition) {
+    if (isNaN(size)) {
+      throw new Error(`Expects size to be a number, got ${size}`);
+    }
+
+    if (shape !== 'square' && shape !== 'circular') {
+      throw new Error(`Expects shape to be either 'square' or 'circular', got '${shape}'`);
+    }
+
+    this.startPosition = startPosition || (shape === 'square' ? { x: 1, y: 1 } : { x: 0, y: 0 });
+    this.points = this.setPoints({ shape, size });
   }
 
   setPoints(settings) {
@@ -35,12 +43,6 @@ class Room {
     return points;
   }
 
-  configure(settings) {
-    const { shape, size, startPosition } = settings;
-    this.startPosition = startPosition;
-    this.points = this.setPoints({ shape, size });
-  }
-
   getStartPosition() {
     return this.startPosition;
   }
@@ -49,5 +51,3 @@ class Room {
     return _some(this.points, point);
   }
 }
-
-export default new Room();
