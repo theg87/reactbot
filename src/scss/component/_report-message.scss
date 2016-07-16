@@ -7,10 +7,6 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
 
-  &.is-hidden {
-    display: none;
-  }
-
   .heading {
     margin: 1rem 0 1.5rem;
     font-weight: 500;
@@ -27,7 +23,7 @@
     border-radius: 2rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     text-align: center;
-    background: #fff;
+    background: $color-report-message-bg;
   }
 
   .message {
@@ -36,7 +32,7 @@
   }
 
   .close-text {
-    color: #999;
+    color: $color-text-light;
     font-size: 0.85rem;
   }
 }

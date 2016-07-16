@@ -34,7 +34,7 @@ export default class Reactbot {
   }
 
   /**
-   * Execute instructions
+   * Executes instructions
    * @param {String} instructions
    * @return {String}
    */
@@ -64,7 +64,7 @@ export default class Reactbot {
   }
 
   /**
-   * Move forward unless a wall is in the way
+   * Moves Reactbot forward unless a wall is in its way
    */
   moveForward() {
     const newPosition = { x: this.x, y: this.y };
@@ -96,7 +96,7 @@ export default class Reactbot {
   }
 
   /**
-   * Rotate to the left or right
+   * Rotates Reactbot to the left or right
    * @param {String} direction
    */
   rotate(direction) {

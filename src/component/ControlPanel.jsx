@@ -1,5 +1,4 @@
 import React from 'react';
-import cx from 'classnames';
 import _reduce from 'lodash/reduce';
 import t from '../util/translate';
 import Room from '../object/Room';
@@ -17,7 +16,7 @@ export default class ControlPanel extends React.Component {
     super(props);
 
     this.state = {
-      shape: 'square',
+      shape: '',
       size: 5,
       startPosX: 1,
       startPosY: 1,
@@ -28,11 +27,29 @@ export default class ControlPanel extends React.Component {
     };
   }
 
+  /**
+   * Handles input changes
+   * @param {Object} evt
+   * @param {String} type
+   */
   handleChange(evt, type) {
     const value = type === 'debug' ? evt.target.checked : evt.target.value;
-    this.setState({ [type]: value });
+    const state = { [type]: value };
+
+    if (type === 'shape') {
+      const isSquare = value === 'square';
+      state.size = isSquare ? 5 : 10;
+      state.startPosX = isSquare ? 1 : 0;
+      state.startPosY = state.startPosX;
+    }
+
+    this.setState(state);
   }
 
+  /**
+   * Handles form submission
+   * @param {Object} evt
+   */
   handleSubmit(evt) {
     evt.preventDefault();
 
@@ -67,6 +84,10 @@ export default class ControlPanel extends React.Component {
     this.setState({ report });
   }
 
+  /**
+   * Adds instruction to the instructions array
+   * @param {String} value
+   */
   addInstruction(value) {
     this.setState(state => ({
       instructions: state.instructions.concat([{ 
@@ -76,10 +97,16 @@ export default class ControlPanel extends React.Component {
     }));
   }
 
+  /**
+   * Clears the instructions array
+   */
   resetInstructions() {
     this.setState({ instructions: [] });
   }
 
+  /**
+   * Sets report to empty string, which will close the report message
+   */
   closeReportMessage() {
     this.setState({ report: '' });
   }
@@ -112,51 +139,63 @@ export default class ControlPanel extends React.Component {
       );
     };
 
+    const roomConfigDisplay = shape === '' ? 'none' : 'block';
+    const resetButtonDisplay = instructions.length ? 'block' : 'none';
+
     return (
       <div className="control-panel">
         <form onSubmit={evt => this.handleSubmit(evt)}>
           <fieldset>
             <legend>Configure room</legend>
 
-            <label htmlFor="shape">Shape</label>
-            <select
-              id="shape"
-              value={shape}
-              onChange={evt => this.handleChange(evt, 'shape')}
-            >
-              <option value="square">Square</option>
-              <option value="circular">Circular</option>
-            </select>
+            <div className="shape">
+              <label htmlFor="shape">Shape</label>
+              <select
+                id="shape"
+                value={shape}
+                onChange={evt => this.handleChange(evt, 'shape')}
+              >
+                <option value="">-- Choose --</option>
+                <option value="square">Square</option>
+                <option value="circular">Circular</option>
+              </select>
+            </div>
 
-            <label htmlFor="size">Size</label>
-            <input
-              id="size"
-              type="number"
-              min="1"
-              max="100"
-              value={size}
-              onChange={evt => this.handleChange(evt, 'size')}
-            />
+            <div style={{ display: roomConfigDisplay }}>
+              <div className="size">
+                <label htmlFor="size">Size</label>
+                <input
+                  id="size"
+                  type="number"
+                  min="1"
+                  max="100"
+                  value={size}
+                  onChange={evt => this.handleChange(evt, 'size')}
+                />
+              </div>
 
-            <h2>Start position</h2>
+              <div className="start-position">
+                <h2 className="heading">Start position</h2>
 
-            <label htmlFor="x">x</label>
-            <input
-              id="x"
-              type="number"
-              min="0"
-              value={startPosX}
-              onChange={evt => this.handleChange(evt, 'startPosX')}
-            />
+                <label htmlFor="x">x</label>
+                <input
+                  id="x"
+                  type="number"
+                  min="0"
+                  value={startPosX}
+                  onChange={evt => this.handleChange(evt, 'startPosX')}
+                />
 
-            <label htmlFor="y">y</label>
-            <input
-              id="y"
-              type="number"
-              min="0"
-              value={startPosY}
-              onChange={evt => this.handleChange(evt, 'startPosY')}
-            />
+                <label htmlFor="y">y</label>
+                <input
+                  id="y"
+                  type="number"
+                  min="0"
+                  value={startPosY}
+                  onChange={evt => this.handleChange(evt, 'startPosY')}
+                />
+              </div>
+            </div>
           </fieldset>
 
           <fieldset>
@@ -176,7 +215,6 @@ export default class ControlPanel extends React.Component {
           <fieldset>
             <legend>Reactbot instructions</legend>
 
-            <p>Click the buttons below to add instructions</p>
             <p>
               <b>{f}</b> = Go forward<br />
               <b>{l}</b> = Turn left<br />
@@ -195,7 +233,8 @@ export default class ControlPanel extends React.Component {
             <button
               type="button"
               onClick={() => this.resetInstructions()}
-              className={cx('reset-button', { 'is-hidden': !instructions.length })}
+              className="reset-button"
+              style={{ display: resetButtonDisplay }}
             >
               Reset
             </button>

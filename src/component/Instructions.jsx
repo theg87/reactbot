@@ -11,7 +11,7 @@ export default class Instructions extends React.Component {
         <div className="added-instructions">
           {
             instructions.length > 0 ?
-              <ul>
+              <ol>
                 {
                   instructions.map(instruction => {
                     return (
@@ -21,7 +21,7 @@ export default class Instructions extends React.Component {
                     );
                   })
                 }
-              </ul>
+              </ol>
             :
               <p>No instructions added. Click the buttons above to add instructions.</p>
           }

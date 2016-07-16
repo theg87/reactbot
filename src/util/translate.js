@@ -2,7 +2,7 @@
  * Returns translated string
  * @param {String} string
  * @param {String} language
- * @return {String} translatedString
+ * @return {String}
  */
 export default function translate(string, language) {
   if (language === 'en') return string;

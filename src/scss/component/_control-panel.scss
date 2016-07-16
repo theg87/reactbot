@@ -6,6 +6,10 @@
     margin-bottom: 1rem;
     border: 1px solid $color-control-panel-border;
     background: $color-control-panel-bg;
+
+    label {
+      margin-right: 0.5rem;
+    }
   }
 
   legend {
@@ -13,6 +17,38 @@
     padding-bottom: 0.25rem;
     border-bottom: 1px solid $color-control-panel-border;
     font-size: 1.25rem;
+  }
+
+  select {
+    height: 1.5625rem;
+  }
+
+  .shape {
+    margin-bottom: 0.5rem;
+  }
+
+  .size input {
+    max-width: 2.8rem;
+  }
+
+  .shape,
+  .size {
+    label {
+      display: inline-block;
+      min-width: 3rem;
+    }
+  }
+
+  .start-position {
+    .heading {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    input {
+      max-width: 2.8rem;
+      margin-right: 1rem;
+    }
   }
 
   .button {
@@ -34,8 +70,16 @@
   }
 
   .reset-button {
-    &.is-hidden {
-      display: none;
+    margin-top: 0.5rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    text-decoration: underline;
+    color: $color-control-panel-reset-button;
+
+    &:hover,
+    &:focus {
+      color: $color-control-panel-reset-button-highlight;
     }
   }
 
@@ -46,7 +90,7 @@
     width: 100%;
     padding: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    background: #fff;
+    background: $color-submit-area-bg;
   }
 
   .debug-input {
@@ -59,6 +103,6 @@
 
   label span {
     font-size: 0.85rem;
-    color: #999;
+    color: $color-text-light;
   }
 }

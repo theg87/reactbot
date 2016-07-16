@@ -1,13 +1,14 @@
 import React from 'react';
-import cx from 'classnames';
 
 export default class ReportMessage extends React.Component {
   render() {
     const { message, show, onClick } = this.props;
+    const display = show ? 'block' : 'none';
 
     return (
       <div 
-        className={cx('report-message', { 'is-hidden': !show })}
+        className="report-message"
+        style={{ display }}
         onClick={() => onClick()}
       >
         <div className="content">

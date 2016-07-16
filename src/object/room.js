@@ -2,12 +2,16 @@ import _some from 'lodash/some';
 
 export default class Room {
   constructor(shape = 'square', size = 1, startPosition) {
-    if (isNaN(size)) {
-      throw new Error(`Expects size to be a number, got ${size}`);
+    if (isNaN(size) || size < 1 || size > 100) {
+      const errorMessage = `Expects size to be a number between 1 and 100, got ${size}`;
+      alert(errorMessage);
+      throw new Error(errorMessage);
     }
 
     if (shape !== 'square' && shape !== 'circular') {
-      throw new Error(`Expects shape to be either 'square' or 'circular', got '${shape}'`);
+      const errorMessage = `Expects shape to be either 'square' or 'circular', got '${shape}'`;
+      alert(errorMessage);
+      throw new Error(errorMessage);
     }
 
     // Set different default start positions depending on
