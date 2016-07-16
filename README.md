@@ -1,5 +1,5 @@
 # Reactbot
-A guidance system for one of the smartest robots in the world!
+*A guidance system for one of the smartest robots in the world!*
 
 To run the project, simply open index.html in a web browser. The following browsers have been tested:
 
