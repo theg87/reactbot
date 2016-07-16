@@ -3,8 +3,6 @@ import _some from 'lodash/some';
 class Room {
   constructor() {
     this.startPosition = { x: 0, y: 0 };
-    this.shape = 'square';
-    this.size = 1;
     this.points = [];
   }
 
@@ -37,7 +35,7 @@ class Room {
     return points;
   }
 
-  init(settings) {
+  configure(settings) {
     const { shape, size, startPosition } = settings;
     this.startPosition = startPosition;
     this.points = this.setPoints({ shape, size });

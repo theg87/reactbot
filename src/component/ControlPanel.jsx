@@ -46,7 +46,7 @@ export default class ControlPanel extends React.Component {
       return result + t(instruction.value, language);
     }, '');
 
-    room.init({
+    room.configure({
       shape,
       size,
       startPosition: {
@@ -55,12 +55,12 @@ export default class ControlPanel extends React.Component {
       },
     });
 
-    const report = reactbot.init({
+    reactbot.configure({
       language,
-      instructions: instructionString,
       debug,
     });
 
+    const report = reactbot.readInstructions(instructionString);
     this.setState({ report });
   }
 
@@ -159,9 +159,9 @@ export default class ControlPanel extends React.Component {
 
             <p>Click the buttons below to add instructions</p>
             <p>
-              {f} = Go forward<br />
-              {l} = Turn left<br />
-              {r} = Turn right
+              <b>{f}</b> = Go forward<br />
+              <b>{l}</b> = Turn left<br />
+              <b>{r}</b> = Turn right
             </p>
 
             <button type="button" onClick={() => this.addInstruction('F')}>{f}</button>

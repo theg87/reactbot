@@ -18,7 +18,7 @@ class Reactbot {
     this.debug = false;
   }
 
-  init(settings) {
+  configure(settings) {
     this.language = settings.language;
     this.debug = settings.debug;
     this.rotation = NORTH;
@@ -26,10 +26,6 @@ class Reactbot {
     const startPosition = room.getStartPosition();
     this.x = startPosition.x;
     this.y = startPosition.y;
-
-    this.readInstructions(settings.instructions);
-
-    return this.report(this.x, this.y, this.rotation);
   }
 
   readInstructions(instructions) {
@@ -53,6 +49,8 @@ class Reactbot {
         this.rotate('right');
       }
     }
+
+    return this.report(this.x, this.y, this.rotation);
   }
 
   moveForward() {
@@ -78,7 +76,7 @@ class Reactbot {
     if (room.contains(newPosition)) {
       this.x = newPosition.x;
       this.y = newPosition.y;
-      this.log(`Moving to position ${this.x} ${this.y}`);
+      reactbotLogger(`Moving to position ${this.x} ${this.y}`);
     } else {
       if (this.debug) reactbotLogger('Reached a wall. I\'m a robot, not a ghost!');
     }
@@ -127,10 +125,11 @@ class Reactbot {
 
   report(x, y, rotation) {
     const cardinalDirection = this.getCardinalDirection(rotation, true);
+    const finalReport = `${x} ${y} ${cardinalDirection}`;
 
-    if (this.debug) reactbotLogger(`Final report: ${x} ${y} ${cardinalDirection}`);
+    if (this.debug) reactbotLogger(`Final report: ${finalReport}`);
 
-    return `${x} ${y} ${cardinalDirection}`;
+    return finalReport;
   }
 }
 
