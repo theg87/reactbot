@@ -18,8 +18,12 @@ export default class Reactbot {
     this.debug = false;
   }
 
+  /**
+   * Configures object
+   * @param {Object}
+   */
   configure({ language, room, debug }) {
-    this.language = language;
+    if (language) this.language = language;
     this.debug = debug;
     this.rotation = NORTH;
     this.room = room;
@@ -29,6 +33,11 @@ export default class Reactbot {
     this.y = startPosition.y;
   }
 
+  /**
+   * Execute instructions
+   * @param {String} instructions
+   * @return {String}
+   */
   execute(instructions) {
     for (let i = 0, len = instructions.length; i < len; i++) {
       const instruction = instructions.charAt(i);
@@ -54,6 +63,9 @@ export default class Reactbot {
     return this.report(this.x, this.y, this.rotation);
   }
 
+  /**
+   * Move forward unless a wall is in the way
+   */
   moveForward() {
     const newPosition = { x: this.x, y: this.y };
 
@@ -83,6 +95,10 @@ export default class Reactbot {
     }
   }
 
+  /**
+   * Rotate to the left or right
+   * @param {String} direction
+   */
   rotate(direction) {
     if (direction === 'left') {
       if (this.rotation === NORTH) {
@@ -101,6 +117,12 @@ export default class Reactbot {
     if (this.debug) reactbotLogger(`Turning ${direction}, now facing ${this.getCardinalDirection(this.rotation)}`);
   }
 
+  /**
+   * Returns degrees of rotation as cardinal direction
+   * @param {Number} rotation
+   * @param {Boolean} shortcode
+   * @return {String}
+   */
   getCardinalDirection(rotation, shortcode) {
     let cardinalDirection;
 
@@ -124,6 +146,13 @@ export default class Reactbot {
     return cardinalDirection;
   }
 
+  /**
+   * Returns description of final position and direction
+   * @param {Number} x
+   * @param {Number} y
+   * @param {Number} rotation
+   * @return {String}
+   */
   report(x, y, rotation) {
     const cardinalDirection = this.getCardinalDirection(rotation, true);
     const finalReport = `${x} ${y} ${cardinalDirection}`;

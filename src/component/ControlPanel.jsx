@@ -5,7 +5,7 @@ import t from '../util/translate';
 import Room from '../object/Room';
 import Reactbot from '../object/Reactbot';
 import Instructions from './Instructions.jsx';
-
+import ReportMessage from './ReportMessage.jsx';
 
 // Create new instance of Reactbot
 const reactbot = new Reactbot();
@@ -78,6 +78,10 @@ export default class ControlPanel extends React.Component {
 
   resetInstructions() {
     this.setState({ instructions: [] });
+  }
+
+  closeReportMessage() {
+    this.setState({ report: '' });
   }
 
   render() {
@@ -191,31 +195,30 @@ export default class ControlPanel extends React.Component {
             <button
               type="button"
               onClick={() => this.resetInstructions()}
-              className={cx('reset-button', { 'is-visible': instructions.length })}
+              className={cx('reset-button', { 'is-hidden': !instructions.length })}
             >
               Reset
             </button>
           </fieldset>
 
-          <input
-            id="debug"
-            type="checkbox"
-            value={this.state.debug}
-            onChange={(evt) => this.handleChange(evt, 'debug')}
+          <div className="submit-area">
+            <div className="debug-input">
+              <input
+                id="debug"
+                type="checkbox"
+                value={this.state.debug}
+                onChange={(evt) => this.handleChange(evt, 'debug')}
+              />
+              <label htmlFor="debug">Debug mode <span>(Open the console in your browser to see debug messages)</span></label>
+            </div>
+
+            <button type="submit" className="button">Execute</button>
+          </div>
+
+          <ReportMessage
+            message={report} show={report !== ''}
+            onClick={() => this.closeReportMessage()}
           />
-          <label htmlFor="debug">Debug mode</label>
-
-          {
-            debug &&
-              <p>Open the console in your browser to see debug messages</p>
-          }
-
-          <button type="submit" className="button">Execute</button>
-
-          {
-            report &&
-              <p>{report}</p>
-          }
         </form>
       </div>
     );

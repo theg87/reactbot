@@ -37,5 +37,5 @@ Instructions.propTypes = {
     value: React.PropTypes.string,
   })),
   language: React.PropTypes.string,
-}
+};
  

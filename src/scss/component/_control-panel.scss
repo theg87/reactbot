@@ -34,10 +34,31 @@
   }
 
   .reset-button {
-    display: none;
-
-    &.is-visible {
-      display: inline-block;
+    &.is-hidden {
+      display: none;
     }
+  }
+
+  .submit-area {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background: #fff;
+  }
+
+  .debug-input {
+    margin-bottom: 0.75rem;
+  }
+
+  input[type="checkbox"] + label {
+    margin-left: 0.25rem;
+  }
+
+  label span {
+    font-size: 0.85rem;
+    color: #999;
   }
 }

@@ -10,10 +10,18 @@ export default class Room {
       throw new Error(`Expects shape to be either 'square' or 'circular', got '${shape}'`);
     }
 
+    // Set different default start positions depending on
+    // whether the room is square or circular
     this.startPosition = startPosition || (shape === 'square' ? { x: 1, y: 1 } : { x: 0, y: 0 });
+
     this.points = this.setPoints({ shape, size });
   }
 
+  /**
+   * Returns array of points contained in the room
+   * @param {Object} settings
+   * @return {Array}
+   */
   setPoints(settings) {
     const { shape } = settings;
     const points = [];
@@ -35,7 +43,7 @@ export default class Room {
       for (let x = 0; x < size; x++) {
         for (let y = 0; y < size; y++) {
           const isInside = Math.pow((x - center), 2) + Math.pow((y - center), 2) < Math.pow(radius, 2);
-          if (isInside) points.push({ x: x - radius + 1, y: y - radius + 1 });
+          if (isInside) points.push({ x: y - radius + 1, y: x - radius + 1 });
         }
       }
     }
@@ -43,10 +51,19 @@ export default class Room {
     return points;
   }
 
+  /**
+   * Returns start position as a point object
+   * @return {Object}
+   */
   getStartPosition() {
     return this.startPosition;
   }
 
+  /**
+   * Returns whether the room contains a specific point or not
+   * @param {Object} point
+   * @return {Boolean}
+   */
   contains(point) {
     return _some(this.points, point);
   }

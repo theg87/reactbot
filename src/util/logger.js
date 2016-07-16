@@ -1,9 +1,11 @@
-import debug from 'debug';
-
+/**
+ * Returns logging function
+ * @param {String} namespace
+ * @param {String} language
+ * @return {Function}
+ */
 export default function logger(namespace) {
-  const myLogger = debug(namespace);
-
   return message => {
-    myLogger(message);
+    console.log(`%c ${namespace}`, 'color: #00acc1; font-weight: bold;', message);
   };
 }

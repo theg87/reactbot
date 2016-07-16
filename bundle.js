@@ -56,7 +56,7 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	__webpack_require__(294);
+	__webpack_require__(295);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21196,6 +21196,10 @@
 
 	var _Instructions2 = _interopRequireDefault(_Instructions);
 
+	var _ReportMessage = __webpack_require__(294);
+
+	var _ReportMessage2 = _interopRequireDefault(_ReportMessage);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -21289,6 +21293,11 @@
 	    key: 'resetInstructions',
 	    value: function resetInstructions() {
 	      this.setState({ instructions: [] });
+	    }
+	  }, {
+	    key: 'closeReportMessage',
+	    value: function closeReportMessage() {
+	      this.setState({ report: '' });
 	    }
 	  }, {
 	    key: 'render',
@@ -21499,39 +21508,44 @@
 	                onClick: function onClick() {
 	                  return _this2.resetInstructions();
 	                },
-	                className: (0, _classnames2.default)('reset-button', { 'is-visible': instructions.length })
+	                className: (0, _classnames2.default)('reset-button', { 'is-hidden': !instructions.length })
 	              },
 	              'Reset'
 	            )
 	          ),
-	          _react2.default.createElement('input', {
-	            id: 'debug',
-	            type: 'checkbox',
-	            value: this.state.debug,
-	            onChange: function onChange(evt) {
-	              return _this2.handleChange(evt, 'debug');
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'submit-area' },
+	            _react2.default.createElement('input', {
+	              id: 'debug',
+	              type: 'checkbox',
+	              value: this.state.debug,
+	              onChange: function onChange(evt) {
+	                return _this2.handleChange(evt, 'debug');
+	              }
+	            }),
+	            _react2.default.createElement(
+	              'label',
+	              { htmlFor: 'debug' },
+	              'Debug mode'
+	            ),
+	            debug && _react2.default.createElement(
+	              'p',
+	              null,
+	              'Open the console in your browser to see debug messages'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'submit', className: 'button' },
+	              'Execute'
+	            )
+	          ),
+	          _react2.default.createElement(_ReportMessage2.default, {
+	            message: report, show: report !== '',
+	            onClick: function onClick() {
+	              return _this2.closeReportMessage();
 	            }
-	          }),
-	          _react2.default.createElement(
-	            'label',
-	            { htmlFor: 'debug' },
-	            'Debug mode'
-	          ),
-	          debug && _react2.default.createElement(
-	            'p',
-	            null,
-	            'Open the console in your browser to see debug messages'
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { type: 'submit', className: 'button' },
-	            'Execute'
-	          ),
-	          report && _react2.default.createElement(
-	            'p',
-	            null,
-	            report
-	          )
+	          })
 	        )
 	      );
 	    }
@@ -25449,6 +25463,8 @@
 	      this.rotation = NORTH;
 	      this.room = room;
 
+	      console.log(this.debug);
+
 	      var startPosition = room.getStartPosition();
 	      this.x = startPosition.x;
 	      this.y = startPosition.y;
@@ -25517,6 +25533,8 @@
 	        }
 	      }
 
+	      console.log(this.debug, 'debug');
+
 	      if (this.debug) reactbotLogger('Turning ' + direction + ', now facing ' + this.getCardinalDirection(this.rotation));
 	    }
 	  }, {
@@ -25581,6 +25599,7 @@
 	  var myLogger = (0, _debug2.default)(namespace);
 
 	  return function (message) {
+	    console.log('message', message);
 	    myLogger(message);
 	  };
 	}
@@ -26187,13 +26206,103 @@
 /* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _classnames = __webpack_require__(174);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ReportMessage = function (_React$Component) {
+	  _inherits(ReportMessage, _React$Component);
+
+	  function ReportMessage() {
+	    _classCallCheck(this, ReportMessage);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ReportMessage).apply(this, arguments));
+	  }
+
+	  _createClass(ReportMessage, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var message = _props.message;
+	      var show = _props.show;
+	      var _onClick = _props.onClick;
+
+
+	      return _react2.default.createElement(
+	        'div',
+	        {
+	          className: (0, _classnames2.default)('report-message', { 'is-hidden': !show }),
+	          onClick: function onClick() {
+	            return _onClick();
+	          }
+	        },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'content' },
+	          _react2.default.createElement(
+	            'h2',
+	            { className: 'heading' },
+	            'Report from Reactbot'
+	          ),
+	          _react2.default.createElement('img', { src: 'assets/robot.png', width: '128', height: '128', alt: 'Reactbot' }),
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'message' },
+	            message
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'close-text' },
+	            'Click anywhere to close'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ReportMessage;
+	}(_react2.default.Component);
+
+	exports.default = ReportMessage;
+
+
+	ReportMessage.propTypes = {
+	  message: _react2.default.PropTypes.string,
+	  show: _react2.default.PropTypes.bool,
+	  onClick: _react2.default.PropTypes.func
+	};
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(295);
+	var content = __webpack_require__(296);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(297)(content, {});
+	var update = __webpack_require__(298)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -26210,21 +26319,21 @@
 	}
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(296)();
+	exports = module.exports = __webpack_require__(297)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "* {\n  -moz-box-sizing: border-box;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml {\n  font-family: Roboto, Tahoma, Arial, Helvetica, sans-serif;\n  -ms-text-size-adjust: 100%;\n  -webkit-text-size-adjust: 100%; }\n\nbody {\n  margin: 0; }\n\nheader,\nsection {\n  display: block; }\n\na {\n  background-color: transparent;\n  -webkit-text-decoration-skip: objects; }\n\nb {\n  font-weight: 500; }\n\nbutton,\ninput,\nselect {\n  font: inherit;\n  margin: 0; }\n\nbutton,\ninput {\n  overflow: visible; }\n\nbutton,\nselect {\n  text-transform: none; }\n\nbutton {\n  cursor: pointer;\n  -webkit-appearance: button; }\n\nbutton:focus {\n  outline: 0; }\n\nfieldset {\n  margin: 0;\n  padding: 0; }\n\nlegend {\n  float: left;\n  width: 100%;\n  color: inherit;\n  padding: 0;\n  white-space: normal; }\n\n[type=\"checkbox\"] {\n  padding: 0; }\n\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/*-------------------------------------------------------------------*/\n/*** Header ***/\n/*** Control panel ***/\nheader {\n  margin-bottom: 1.5rem;\n  padding: 1rem;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n  background: #546e7a; }\n\nh1 {\n  margin: 0;\n  font-weight: 400;\n  font-size: 1.5rem;\n  color: #fff; }\n\n.control-panel {\n  padding: 0.5rem; }\n  .control-panel fieldset {\n    padding: 1rem;\n    margin-bottom: 1rem;\n    border: 1px solid #eaeaea;\n    background: #f5f5f5; }\n  .control-panel legend {\n    margin-bottom: 1rem;\n    padding-bottom: 0.25rem;\n    border-bottom: 1px solid #eaeaea;\n    font-size: 1.25rem; }\n  .control-panel .button {\n    padding: 0.5rem 0.75rem;\n    border: 0;\n    border-radius: 2px;\n    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);\n    color: #fff;\n    background: #00acc1; }\n    .control-panel .button:hover, .control-panel .button:focus {\n      background: #00c3db; }\n  .control-panel .instruction-button {\n    margin-right: 0.5rem; }\n  .control-panel .reset-button {\n    display: none; }\n    .control-panel .reset-button.is-visible {\n      display: inline-block; }\n\n.instructions {\n  margin-top: 1.5rem; }\n  .instructions .heading {\n    font-size: 1rem;\n    font-weight: 500; }\n  .instructions .added-instructions {\n    padding: 0.5rem;\n    border: 1px dashed #ccc;\n    border-radius: 2px; }\n", ""]);
+	exports.push([module.id, "* {\n  -moz-box-sizing: border-box;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml {\n  font-family: Roboto, Tahoma, Arial, Helvetica, sans-serif;\n  -ms-text-size-adjust: 100%;\n  -webkit-text-size-adjust: 100%; }\n\nbody {\n  margin: 0; }\n\nheader,\nsection {\n  display: block; }\n\na {\n  background-color: transparent;\n  -webkit-text-decoration-skip: objects; }\n\nb {\n  font-weight: 500; }\n\nbutton,\ninput,\nselect {\n  font: inherit;\n  margin: 0; }\n\nbutton,\ninput {\n  overflow: visible; }\n\nbutton,\nselect {\n  text-transform: none; }\n\nbutton {\n  cursor: pointer;\n  -webkit-appearance: button; }\n\nbutton:focus {\n  outline: 0; }\n\nfieldset {\n  margin: 0;\n  padding: 0; }\n\nlegend {\n  float: left;\n  width: 100%;\n  color: inherit;\n  padding: 0;\n  white-space: normal; }\n\n[type=\"checkbox\"] {\n  padding: 0; }\n\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/*-------------------------------------------------------------------*/\n/*** Header ***/\n/*** Control panel ***/\nbody {\n  padding-bottom: 5rem; }\n\nheader {\n  margin-bottom: 1.5rem;\n  padding: 1rem;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n  background: #546e7a; }\n\nh1 {\n  margin: 0;\n  font-weight: 400;\n  font-size: 1.5rem;\n  color: #fff; }\n\n.structural {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(1px, 1px, 1px, 1px);\n  padding: 0;\n  border: 0; }\n\n.control-panel {\n  padding: 0.5rem; }\n  .control-panel fieldset {\n    padding: 1rem;\n    margin-bottom: 1rem;\n    border: 1px solid #eaeaea;\n    background: #f5f5f5; }\n  .control-panel legend {\n    margin-bottom: 1rem;\n    padding-bottom: 0.25rem;\n    border-bottom: 1px solid #eaeaea;\n    font-size: 1.25rem; }\n  .control-panel .button {\n    padding: 0.5rem 0.75rem;\n    border: 0;\n    border-radius: 2px;\n    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);\n    color: #fff;\n    background: #00acc1; }\n    .control-panel .button:hover, .control-panel .button:focus {\n      background: #00c3db; }\n  .control-panel .instruction-button {\n    margin-right: 0.5rem; }\n  .control-panel .reset-button.is-hidden {\n    display: none; }\n  .control-panel .submit-area {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    width: 100%;\n    padding: 1rem;\n    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n    background: #fff; }\n\n.instructions {\n  margin-top: 1.5rem; }\n  .instructions .heading {\n    font-size: 1rem;\n    font-weight: 500; }\n  .instructions .added-instructions {\n    padding: 0.5rem;\n    border: 1px dashed #ccc;\n    border-radius: 2px; }\n\n.report-message {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 2;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5); }\n  .report-message.is-hidden {\n    display: none; }\n  .report-message .heading {\n    margin: 1rem 0 1.5rem;\n    font-weight: 500; }\n  .report-message .content {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    width: 90%;\n    max-width: 30rem;\n    padding: 1rem;\n    transform: translate(-50%, -50%);\n    border-radius: 2rem;\n    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n    text-align: center;\n    background: #fff; }\n  .report-message .message {\n    font-weight: 500;\n    font-size: 2rem; }\n  .report-message .close-text {\n    color: #999;\n    font-size: 0.85rem; }\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports) {
 
 	/*
@@ -26280,7 +26389,7 @@
 
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
