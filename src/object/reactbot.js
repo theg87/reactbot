@@ -29,7 +29,7 @@ export default class Reactbot {
     this.y = startPosition.y;
   }
 
-  readInstructions(instructions) {
+  execute(instructions) {
     for (let i = 0, len = instructions.length; i < len; i++) {
       const instruction = instructions.charAt(i);
 

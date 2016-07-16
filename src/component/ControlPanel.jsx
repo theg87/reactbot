@@ -63,7 +63,7 @@ export default class ControlPanel extends React.Component {
       debug,
     });
 
-    const report = reactbot.readInstructions(instructionString);
+    const report = reactbot.execute(instructionString);
     this.setState({ report });
   }
 
@@ -95,6 +95,18 @@ export default class ControlPanel extends React.Component {
     const f = t('F', language);
     const l = t('L', language);
     const r = t('R', language);
+
+    const instructionButton = (instruction, translation) => {
+      return (
+        <button
+          type="button"
+          className="button instruction-button"
+          onClick={() => this.addInstruction(instruction)}
+        >
+          {translation}
+        </button>
+      );
+    };
 
     return (
       <div className="control-panel">
@@ -157,7 +169,7 @@ export default class ControlPanel extends React.Component {
             </select>
           </fieldset>
 
-          <fieldset className="instructions">
+          <fieldset>
             <legend>Reactbot instructions</legend>
 
             <p>Click the buttons below to add instructions</p>
@@ -167,13 +179,12 @@ export default class ControlPanel extends React.Component {
               <b>{r}</b> = Turn right
             </p>
 
-            <button type="button" onClick={() => this.addInstruction('F')}>{f}</button>
-            <button type="button" onClick={() => this.addInstruction('L')}>{l}</button>
-            <button type="button" onClick={() => this.addInstruction('R')}>{r}</button>
+            {instructionButton('F', f)}
+            {instructionButton('L', l)}
+            {instructionButton('R', r)}
 
             <Instructions
               instructions={instructions}
-              show={instructions.length > 0}
               language={language}
             />
 
@@ -186,20 +197,20 @@ export default class ControlPanel extends React.Component {
             </button>
           </fieldset>
 
-          <label htmlFor="debug">Debug mode</label>
           <input
             id="debug"
             type="checkbox"
             value={this.state.debug}
             onChange={(evt) => this.handleChange(evt, 'debug')}
           />
+          <label htmlFor="debug">Debug mode</label>
 
           {
             debug &&
-              <p>Open the console in your browser to see log messages</p>
+              <p>Open the console in your browser to see debug messages</p>
           }
 
-          <button type="submit">Run instructions</button>
+          <button type="submit" className="button">Execute</button>
 
           {
             report &&
