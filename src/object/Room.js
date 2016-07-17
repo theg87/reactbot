@@ -1,7 +1,10 @@
 import _some from 'lodash/some';
+import logger from '../util/logger';
+
+const roomLogger = logger('Room');
 
 export default class Room {
-  constructor(shape = 'square', size = 1, startPosition) {
+  constructor(shape = 'square', size = 1, startPosition, debug = false) {
     if (isNaN(size) || size < 1 || size > 100) {
       const errorMessage = `Expects size to be a number between 1 and 100, got ${size}`;
       alert(errorMessage);
@@ -24,6 +27,11 @@ export default class Room {
       const errorMessage = `Start position ${startPosition.x} ${startPosition.y} is not within the room's boundaries`;
       alert(errorMessage);
       throw new Error(errorMessage);
+    }
+
+    if (debug) {
+      roomLogger(`Creating ${shape} room of size ${size} with start position ${this.startPosition.x} ${this.startPosition.y}`);
+      roomLogger('The room contains these points', this.points);
     }
   }
 

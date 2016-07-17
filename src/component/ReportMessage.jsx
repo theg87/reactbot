@@ -15,7 +15,7 @@ export default class ReportMessage extends React.Component {
           <h2 className="heading">Report from Reactbot</h2>
           <img src="assets/robot.png" width="128" height="128" alt="Reactbot" />
           <p className="message">{message}</p>
-          <p className="close-text">Click anywhere to close</p>
+          <p className="text-small text-light">Click anywhere to close</p>
         </div>
       </div>
     );

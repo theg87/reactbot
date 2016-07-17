@@ -73,7 +73,7 @@ export default class ControlPanel extends React.Component {
       y: parseInt(startPosY, 10),
     };
 
-    const room = new Room(shape, size, startPosition);
+    const room = new Room(shape, size, startPosition, debug);
 
     reactbot.configure({
       language,
@@ -249,7 +249,7 @@ export default class ControlPanel extends React.Component {
                 value={this.state.debug}
                 onChange={(evt) => this.handleChange(evt, 'debug')}
               />
-              <label htmlFor="debug">Debug mode <span>(Open the console in your browser to see debug messages)</span></label>
+              <label htmlFor="debug">Debug mode <span className="text-small text-light">(Open the console in your browser to see debug messages)</span></label>
             </div>
 
             <button type="submit" className="button">Execute</button>

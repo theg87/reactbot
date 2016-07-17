@@ -21184,7 +21184,7 @@
 
 	var _Room2 = _interopRequireDefault(_Room);
 
-	var _Reactbot = __webpack_require__(287);
+	var _Reactbot = __webpack_require__(288);
 
 	var _Reactbot2 = _interopRequireDefault(_Reactbot);
 
@@ -21209,6 +21209,7 @@
 	// Create new instance of Reactbot
 	var reactbot = new _Reactbot2.default();
 
+	// Counter used for React keys
 	var instructionId = 0;
 
 	var ControlPanel = function (_React$Component) {
@@ -25226,15 +25227,22 @@
 
 	var _some3 = _interopRequireDefault(_some2);
 
+	var _logger = __webpack_require__(287);
+
+	var _logger2 = _interopRequireDefault(_logger);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var roomLogger = (0, _logger2.default)('Room');
 
 	var Room = function () {
 	  function Room() {
 	    var shape = arguments.length <= 0 || arguments[0] === undefined ? 'square' : arguments[0];
 	    var size = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
 	    var startPosition = arguments[2];
+	    var debug = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 
 	    _classCallCheck(this, Room);
 
@@ -25255,6 +25263,14 @@
 	    this.startPosition = startPosition || (shape === 'square' ? { x: 1, y: 1 } : { x: 0, y: 0 });
 
 	    this.points = this.setPoints({ shape: shape, size: size });
+
+	    if (!this.contains(startPosition)) {
+	      var _errorMessage2 = 'Start position ' + startPosition.x + ' ' + startPosition.y + ' is not within the room\'s boundaries';
+	      alert(_errorMessage2);
+	      throw new Error(_errorMessage2);
+	    }
+
+	    if (debug) roomLogger('Creating ' + shape + ' room of size ' + size + ' with start position', this.startPosition, 'and these points', this.points);
 	  }
 
 	  /**
@@ -25286,10 +25302,10 @@
 	        var _size = radius * 2;
 	        var center = _size / 2 - 1;
 
-	        for (var _x3 = 0; _x3 < _size; _x3++) {
+	        for (var _x4 = 0; _x4 < _size; _x4++) {
 	          for (var _y = 0; _y < _size; _y++) {
-	            var isInside = Math.pow(_x3 - center, 2) + Math.pow(_y - center, 2) < Math.pow(radius, 2);
-	            if (isInside) points.push({ x: _y - radius + 1, y: _x3 - radius + 1 });
+	            var isInside = Math.pow(_x4 - center, 2) + Math.pow(_y - center, 2) < Math.pow(radius, 2);
+	            if (isInside) points.push({ x: _y - radius + 1, y: _x4 - radius + 1 });
 	          }
 	        }
 	      }
@@ -25450,6 +25466,38 @@
 
 /***/ },
 /* 287 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = logger;
+	var colors = ['#00acc1', '#f44336', '#7cb342', '#607d8b', '#9c27b0'];
+
+	var counter = 0;
+
+	/**
+	 * Returns logging function
+	 * @param {String} namespace
+	 * @return {Function}
+	 */
+	function logger(namespace) {
+	  var color = colors[counter++];
+
+	  if (!color) {
+	    counter = 0;
+	    color = colors[counter++];
+	  }
+
+	  return function (message) {
+	    console.log('%c ' + namespace + ':', 'color: ' + color + '; font-weight: bold;', message);
+	  };
+	}
+
+/***/ },
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25460,7 +25508,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _logger = __webpack_require__(288);
+	var _logger = __webpack_require__(287);
 
 	var _logger2 = _interopRequireDefault(_logger);
 
@@ -25651,28 +25699,6 @@
 	}();
 
 	exports.default = Reactbot;
-
-/***/ },
-/* 288 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = logger;
-	/**
-	 * Returns logging function
-	 * @param {String} namespace
-	 * @param {String} language
-	 * @return {Function}
-	 */
-	function logger(namespace) {
-	  return function (message) {
-	    console.log('%c ' + namespace, 'color: #00acc1; font-weight: bold;', message);
-	  };
-	}
 
 /***/ },
 /* 289 */
