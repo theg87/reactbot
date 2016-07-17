@@ -5,6 +5,7 @@ $rb-light-gray: #f5f5f5;
 $rb-edge-gray: #eaeaea;
 $rb-blue-gray: #546e7a;
 $rb-cyan: #00acc1;
+$rb-light-cyan: lighten($rb-cyan, 7%);
 $rb-white: #fff;
 
 /*-------------------------------------------------------------------*/
@@ -20,9 +21,9 @@ $color-control-panel-border: $rb-edge-gray;
 $color-control-panel-bg: $rb-light-gray;
 $color-control-panel-button-bg: $rb-cyan;
 $color-control-panel-button-text: $rb-white;
-$color-control-panel-button-highlight: lighten($rb-cyan, 5%);
+$color-control-panel-button-highlight: $rb-light-cyan;
 $color-control-panel-reset-button: $rb-cyan;
-$color-control-panel-reset-button-highlight: lighten($rb-cyan, 5%);
+$color-control-panel-reset-button-highlight: $rb-light-cyan;
 $color-submit-area-bg: $rb-white;
 
 /*** Instructions ***/

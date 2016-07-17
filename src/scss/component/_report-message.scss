@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 10;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
@@ -19,10 +19,11 @@
     width: 90%;
     max-width: 30rem;
     padding: 1rem;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
     border-radius: 2rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     text-align: center;
     background: $color-report-message-bg;
   }
