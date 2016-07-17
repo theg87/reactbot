@@ -178,7 +178,8 @@ export default class ControlPanel extends React.Component {
               <input
                 id="x"
                 type="number"
-                min="0"
+                min="-100"
+                max="100"
                 value={startPosX}
                 onChange={evt => this.handleChange(evt, 'startPosX')}
               />
@@ -187,7 +188,8 @@ export default class ControlPanel extends React.Component {
               <input
                 id="y"
                 type="number"
-                min="0"
+                min="-100"
+                max="100"
                 value={startPosY}
                 onChange={evt => this.handleChange(evt, 'startPosY')}
               />

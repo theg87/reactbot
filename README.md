@@ -9,8 +9,10 @@ To run the project, simply open index.html in a web browser. The following brows
 * Microsoft Edge 14 on Windows 10
 * Chrome 51 on Windows 10
 * Firefox 47 on Windows 10
-* Safari 9.1 on OS X
+* Safari 9.1 on OS X (El Capitan)
+* Safari on iOS 8 (iPhone 6)
 * Safari on iOS 9 (iPhone 6S)
+* Chrome on Android 5 (Nexus 6)
 * Chrome on Android 6 (Samsung Galaxy S7)
 
 ## Run unit tests
