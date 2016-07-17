@@ -26,6 +26,8 @@ export default class ControlPanel extends React.Component {
       report: '',
       debug: false,
     };
+
+    this.closeReportMessage = this.closeReportMessage.bind(this);
   }
 
   /**
@@ -81,7 +83,12 @@ export default class ControlPanel extends React.Component {
     });
 
     const report = reactbot.execute(instructionString);
-    this.setState({ report });
+    this.setState({
+      report,
+    }, () => {
+      document.addEventListener('keyup', this.closeReportMessage);
+      document.querySelector('.report-message').focus();
+    });
   }
 
   /**
@@ -108,7 +115,11 @@ export default class ControlPanel extends React.Component {
    * Sets report to empty string, which will close the report message
    */
   closeReportMessage() {
-    this.setState({ report: '' });
+    this.setState({
+      report: '',
+    }, () => {
+      document.removeEventListener('keyup', this.closeReportMessage);
+    });
   }
 
   render() {
@@ -169,6 +180,12 @@ export default class ControlPanel extends React.Component {
                 value={size}
                 onChange={evt => this.handleChange(evt, 'size')}
               />
+              {
+                shape === 'square' ?
+                  <span className="text-small text-light">({size}x{size})</span>
+                :
+                  <span className="text-small text-light">(radius)</span>
+              }
             </div>
 
             <div className="start-position">

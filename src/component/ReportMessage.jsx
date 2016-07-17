@@ -10,6 +10,7 @@ export default class ReportMessage extends React.Component {
         className="report-message"
         style={{ display }}
         onClick={() => onClick()}
+        tabIndex="0"
       >
         <div className="content">
           <h2 className="heading">Report from Reactbot</h2>

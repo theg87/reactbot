@@ -1,7 +1,8 @@
 // Color constants
-$rb-dark-gray: #999;
-$rb-mid-gray: #ccc;
-$rb-light-gray: #f5f5f5;
+$rb-dark-gray: #212121;
+$rb-mid-gray: #999;
+$rb-light-gray: #ccc;
+$rb-light-gray-2: #f5f5f5;
 $rb-edge-gray: #eaeaea;
 $rb-blue-gray: #546e7a;
 $rb-cyan: #00acc1;
@@ -10,7 +11,8 @@ $rb-white: #fff;
 
 /*-------------------------------------------------------------------*/
 
-$color-text-light: $rb-dark-gray;
+$color-text: $rb-dark-gray;
+$color-text-light: $rb-mid-gray;
 
 /*** Header ***/
 $color-header-bg: $rb-blue-gray;
@@ -18,7 +20,7 @@ $color-main-heading: $rb-white;
 
 /*** Control panel ***/
 $color-control-panel-border: $rb-edge-gray;
-$color-control-panel-bg: $rb-light-gray;
+$color-control-panel-bg: $rb-light-gray-2;
 $color-control-panel-button-bg: $rb-cyan;
 $color-control-panel-button-text: $rb-white;
 $color-control-panel-button-highlight: $rb-light-cyan;
@@ -27,7 +29,7 @@ $color-control-panel-reset-button-highlight: $rb-light-cyan;
 $color-submit-area-bg: $rb-white;
 
 /*** Instructions ***/
-$color-instructions-border: $rb-mid-gray;
+$color-instructions-border: $rb-light-gray;
 
 /*** Report message ***/
 $color-report-message-bg: $rb-white;
