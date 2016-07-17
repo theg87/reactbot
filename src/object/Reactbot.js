@@ -57,6 +57,8 @@ export default class Reactbot {
         (this.language === 'en' && instruction === 'R')
       ) {
         this.rotate('right');
+      } else {
+        if (this.debug) reactbotLogger(`Did not understand instruction '${instruction}'`);
       }
     }
 

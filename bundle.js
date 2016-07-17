@@ -21221,8 +21221,8 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ControlPanel).call(this, props));
 
 	    _this.state = {
-	      shape: '',
-	      size: 5,
+	      shape: 'square',
+	      size: 10,
 	      startPosX: 1,
 	      startPosY: 1,
 	      language: 'sv',
@@ -21247,9 +21247,8 @@
 	      var state = _defineProperty({}, type, value);
 
 	      if (type === 'shape') {
-	        var isSquare = value === 'square';
-	        state.size = isSquare ? 5 : 10;
-	        state.startPosX = isSquare ? 1 : 0;
+	        state.size = 10;
+	        state.startPosX = value === 'square' ? 1 : 0;
 	        state.startPosY = state.startPosX;
 	      }
 
@@ -21285,7 +21284,7 @@
 	        y: parseInt(startPosY, 10)
 	      };
 
-	      var room = new _Room2.default(shape, size, startPosition);
+	      var room = new _Room2.default(shape, size, startPosition, debug);
 
 	      reactbot.configure({
 	        language: language,
@@ -21368,7 +21367,6 @@
 	        );
 	      };
 
-	      var roomConfigDisplay = shape === '' ? 'none' : 'block';
 	      var resetButtonDisplay = instructions.length ? 'block' : 'none';
 
 	      return _react2.default.createElement(
@@ -21406,11 +21404,6 @@
 	                },
 	                _react2.default.createElement(
 	                  'option',
-	                  { value: '' },
-	                  '-- Choose --'
-	                ),
-	                _react2.default.createElement(
-	                  'option',
 	                  { value: 'square' },
 	                  'Square'
 	                ),
@@ -21423,63 +21416,59 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { style: { display: roomConfigDisplay } },
+	              { className: 'size' },
 	              _react2.default.createElement(
-	                'div',
-	                { className: 'size' },
-	                _react2.default.createElement(
-	                  'label',
-	                  { htmlFor: 'size' },
-	                  'Size'
-	                ),
-	                _react2.default.createElement('input', {
-	                  id: 'size',
-	                  type: 'number',
-	                  min: '1',
-	                  max: '100',
-	                  value: size,
-	                  onChange: function onChange(evt) {
-	                    return _this2.handleChange(evt, 'size');
-	                  }
-	                })
+	                'label',
+	                { htmlFor: 'size' },
+	                'Size'
+	              ),
+	              _react2.default.createElement('input', {
+	                id: 'size',
+	                type: 'number',
+	                min: '1',
+	                max: '100',
+	                value: size,
+	                onChange: function onChange(evt) {
+	                  return _this2.handleChange(evt, 'size');
+	                }
+	              })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'start-position' },
+	              _react2.default.createElement(
+	                'h2',
+	                { className: 'heading' },
+	                'Start position'
 	              ),
 	              _react2.default.createElement(
-	                'div',
-	                { className: 'start-position' },
-	                _react2.default.createElement(
-	                  'h2',
-	                  { className: 'heading' },
-	                  'Start position'
-	                ),
-	                _react2.default.createElement(
-	                  'label',
-	                  { htmlFor: 'x' },
-	                  'x'
-	                ),
-	                _react2.default.createElement('input', {
-	                  id: 'x',
-	                  type: 'number',
-	                  min: '0',
-	                  value: startPosX,
-	                  onChange: function onChange(evt) {
-	                    return _this2.handleChange(evt, 'startPosX');
-	                  }
-	                }),
-	                _react2.default.createElement(
-	                  'label',
-	                  { htmlFor: 'y' },
-	                  'y'
-	                ),
-	                _react2.default.createElement('input', {
-	                  id: 'y',
-	                  type: 'number',
-	                  min: '0',
-	                  value: startPosY,
-	                  onChange: function onChange(evt) {
-	                    return _this2.handleChange(evt, 'startPosY');
-	                  }
-	                })
-	              )
+	                'label',
+	                { htmlFor: 'x' },
+	                'x'
+	              ),
+	              _react2.default.createElement('input', {
+	                id: 'x',
+	                type: 'number',
+	                min: '0',
+	                value: startPosX,
+	                onChange: function onChange(evt) {
+	                  return _this2.handleChange(evt, 'startPosX');
+	                }
+	              }),
+	              _react2.default.createElement(
+	                'label',
+	                { htmlFor: 'y' },
+	                'y'
+	              ),
+	              _react2.default.createElement('input', {
+	                id: 'y',
+	                type: 'number',
+	                min: '0',
+	                value: startPosY,
+	                onChange: function onChange(evt) {
+	                  return _this2.handleChange(evt, 'startPosY');
+	                }
+	              })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -21588,7 +21577,7 @@
 	                'Debug mode ',
 	                _react2.default.createElement(
 	                  'span',
-	                  null,
+	                  { className: 'text-small text-light' },
 	                  '(Open the console in your browser to see debug messages)'
 	                )
 	              )
@@ -25190,7 +25179,9 @@
 	 * @return {String}
 	 */
 	function translate(string, language) {
-	  if (language === 'en') return string;
+	  if (language !== 'sv' || typeof string !== 'string') {
+	    return typeof string === 'string' ? string : '';
+	  }
 
 	  var translatedString = void 0;
 
@@ -25208,7 +25199,7 @@
 	      translatedString = string;
 	  }
 
-	  return translatedString;
+	  return translatedString || '';
 	}
 
 /***/ },
@@ -25270,7 +25261,10 @@
 	      throw new Error(_errorMessage2);
 	    }
 
-	    if (debug) roomLogger('Creating ' + shape + ' room of size ' + size + ' with start position', this.startPosition, 'and these points', this.points);
+	    if (debug) {
+	      roomLogger('Creating ' + shape + ' room of size ' + size + ' with start position ' + this.startPosition.x + ' ' + this.startPosition.y);
+	      roomLogger('The room contains these points', this.points);
+	    }
 	  }
 
 	  /**
@@ -25474,7 +25468,7 @@
 	  value: true
 	});
 	exports.default = logger;
-	var colors = ['#00acc1', '#f44336', '#7cb342', '#607d8b', '#9c27b0'];
+	var colors = ['#f44336', '#00acc1', '#7cb342', '#607d8b', '#9c27b0'];
 
 	var counter = 0;
 
@@ -25483,16 +25477,26 @@
 	 * @param {String} namespace
 	 * @return {Function}
 	 */
-	function logger(namespace) {
+	function logger() {
+	  var namespace = arguments.length <= 0 || arguments[0] === undefined ? 'Default' : arguments[0];
+
+	  // Reset counter if it exceeds the length of the colors array
+	  // (minus 1 because zero-based)
+	  if (counter > colors.length - 1) counter = 0;
+
 	  var color = colors[counter++];
 
-	  if (!color) {
-	    counter = 0;
-	    color = colors[counter++];
-	  }
-
+	  /**
+	   * Logs message and optional extra parameter in the browser's console
+	   * @param {String} message
+	   * @param {Any} extraParam
+	   */
 	  return function (message) {
-	    console.log('%c ' + namespace + ':', 'color: ' + color + '; font-weight: bold;', message);
+	    var extraParam = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+
+	    if (message) {
+	      console.log('%c ' + namespace + ':', 'color: ' + color + '; font-weight: bold;', message, extraParam);
+	    }
 	  };
 	}
 
@@ -25577,6 +25581,8 @@
 	          this.rotate('left');
 	        } else if (this.language === 'sv' && instruction === 'H' || this.language === 'en' && instruction === 'R') {
 	          this.rotate('right');
+	        } else {
+	          if (this.debug) reactbotLogger('Did not understand instruction \'' + instruction + '\'');
 	        }
 	      }
 
@@ -25858,7 +25864,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'p',
-	            { className: 'close-text' },
+	            { className: 'text-small text-light' },
 	            'Click anywhere to close'
 	          )
 	        )
@@ -25913,7 +25919,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\n  -moz-box-sizing: border-box;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml {\n  font-family: Roboto, Tahoma, Arial, Helvetica, sans-serif;\n  -ms-text-size-adjust: 100%;\n  -webkit-text-size-adjust: 100%; }\n\nbody {\n  margin: 0; }\n\nheader,\nsection {\n  display: block; }\n\na {\n  background-color: transparent;\n  -webkit-text-decoration-skip: objects; }\n\nb {\n  font-weight: 500; }\n\nbutton,\ninput,\nselect {\n  font: inherit;\n  margin: 0; }\n\nbutton,\ninput {\n  overflow: visible; }\n\nbutton,\nselect {\n  text-transform: none; }\n\nbutton {\n  cursor: pointer;\n  -webkit-appearance: button; }\n\nbutton:focus {\n  outline: 0; }\n\nfieldset {\n  margin: 0;\n  padding: 0; }\n\nlegend {\n  float: left;\n  width: 100%;\n  color: inherit;\n  padding: 0;\n  white-space: normal; }\n\n[type=\"checkbox\"] {\n  padding: 0; }\n\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/*-------------------------------------------------------------------*/\n/*** Header ***/\n/*** Control panel ***/\n/*** Instructions ***/\n/*** Report message ***/\nbody {\n  padding-bottom: 7rem; }\n\nheader {\n  margin-bottom: 1.5rem;\n  padding: 1rem;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n  background: #546e7a; }\n\nh1 {\n  margin: 0;\n  font-weight: 400;\n  font-size: 1.5rem;\n  color: #fff; }\n\n.structural {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(1px, 1px, 1px, 1px);\n  padding: 0;\n  border: 0; }\n\n.control-panel {\n  padding: 0.5rem; }\n  .control-panel fieldset {\n    padding: 1rem;\n    margin-bottom: 1rem;\n    border: 1px solid #eaeaea;\n    background: #f5f5f5; }\n    .control-panel fieldset label {\n      margin-right: 0.5rem; }\n  .control-panel legend {\n    margin-bottom: 1rem;\n    padding-bottom: 0.25rem;\n    border-bottom: 1px solid #eaeaea;\n    font-size: 1.25rem; }\n  .control-panel select {\n    height: 1.5625rem; }\n  .control-panel .shape {\n    margin-bottom: 0.5rem; }\n  .control-panel .size input {\n    max-width: 2.8rem; }\n  .control-panel .shape label,\n  .control-panel .size label {\n    display: inline-block;\n    min-width: 3rem; }\n  .control-panel .start-position .heading {\n    font-weight: 500;\n    font-size: 1rem; }\n  .control-panel .start-position input {\n    max-width: 2.8rem;\n    margin-right: 1rem; }\n  .control-panel .button {\n    padding: 0.5rem 0.75rem;\n    border: 0;\n    border-radius: 2px;\n    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);\n    color: #fff;\n    background: #00acc1; }\n    .control-panel .button:hover, .control-panel .button:focus {\n      background: #00c3db; }\n  .control-panel .instruction-button {\n    margin-right: 0.5rem; }\n  .control-panel .reset-button {\n    margin-top: 0.5rem;\n    padding: 0;\n    border: 0;\n    background: none;\n    text-decoration: underline;\n    color: #00acc1; }\n    .control-panel .reset-button:hover, .control-panel .reset-button:focus {\n      color: #00c3db; }\n  .control-panel .submit-area {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    width: 100%;\n    padding: 1rem;\n    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n    background: #fff; }\n  .control-panel .debug-input {\n    margin-bottom: 0.75rem; }\n  .control-panel input[type=\"checkbox\"] + label {\n    margin-left: 0.25rem; }\n  .control-panel label span {\n    font-size: 0.85rem;\n    color: #999; }\n\n.instructions {\n  margin-top: 1.5rem; }\n  .instructions .heading {\n    font-size: 1rem;\n    font-weight: 500; }\n  .instructions .added-instructions {\n    padding: 0.5rem;\n    border: 1px dashed #ccc;\n    border-radius: 4px; }\n    .instructions .added-instructions ol {\n      padding: 0;\n      list-style: none; }\n    .instructions .added-instructions li {\n      display: inline; }\n\n.report-message {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 2;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5); }\n  .report-message .heading {\n    margin: 1rem 0 1.5rem;\n    font-weight: 500; }\n  .report-message .content {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    width: 90%;\n    max-width: 30rem;\n    padding: 1rem;\n    transform: translate(-50%, -50%);\n    border-radius: 2rem;\n    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n    text-align: center;\n    background: #fff; }\n  .report-message .message {\n    font-weight: 500;\n    font-size: 2rem; }\n  .report-message .close-text {\n    color: #999;\n    font-size: 0.85rem; }\n", ""]);
+	exports.push([module.id, "* {\n  -moz-box-sizing: border-box;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box; }\n\nhtml {\n  font-family: Roboto, Tahoma, Arial, Helvetica, sans-serif;\n  -ms-text-size-adjust: 100%;\n  -webkit-text-size-adjust: 100%; }\n\nbody {\n  margin: 0; }\n\nheader,\nsection {\n  display: block; }\n\na {\n  background-color: transparent;\n  -webkit-text-decoration-skip: objects; }\n\nb {\n  font-weight: 500; }\n\nbutton,\ninput,\nselect {\n  font: inherit;\n  margin: 0; }\n\nbutton,\ninput {\n  overflow: visible; }\n\nbutton,\nselect {\n  text-transform: none; }\n\nbutton {\n  cursor: pointer;\n  -webkit-appearance: button; }\n\nbutton:focus {\n  outline: 0; }\n\nfieldset {\n  margin: 0;\n  padding: 0; }\n\nlegend {\n  float: left;\n  width: 100%;\n  color: inherit;\n  padding: 0;\n  white-space: normal; }\n\n[type=\"checkbox\"] {\n  padding: 0; }\n\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/*-------------------------------------------------------------------*/\n/*** Header ***/\n/*** Control panel ***/\n/*** Instructions ***/\n/*** Report message ***/\nbody {\n  padding-bottom: 7rem; }\n\nheader {\n  margin-bottom: 1.5rem;\n  padding: 1rem;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n  background: #546e7a; }\n\nh1 {\n  margin: 0;\n  font-weight: 400;\n  font-size: 1.5rem;\n  color: #fff; }\n\n.structural {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(1px, 1px, 1px, 1px);\n  padding: 0;\n  border: 0; }\n\n.text-light {\n  color: #999; }\n\n.text-small {\n  font-size: 0.85rem; }\n\n.control-panel {\n  padding: 0.5rem; }\n  .control-panel fieldset {\n    padding: 1rem;\n    margin-bottom: 1rem;\n    border: 1px solid #eaeaea;\n    background: #f5f5f5; }\n    .control-panel fieldset label {\n      margin-right: 0.5rem; }\n  .control-panel legend {\n    margin-bottom: 1rem;\n    padding-bottom: 0.25rem;\n    border-bottom: 1px solid #eaeaea;\n    font-size: 1.25rem; }\n  .control-panel select {\n    height: 1.5625rem; }\n  .control-panel .shape {\n    margin-bottom: 0.5rem; }\n  .control-panel .size input {\n    max-width: 2.8rem; }\n  .control-panel .shape label,\n  .control-panel .size label {\n    display: inline-block;\n    min-width: 3rem; }\n  .control-panel .start-position .heading {\n    font-weight: 500;\n    font-size: 1rem; }\n  .control-panel .start-position input {\n    max-width: 2.8rem;\n    margin-right: 1rem; }\n  .control-panel .button {\n    padding: 0.5rem 0.75rem;\n    border: 0;\n    border-radius: 2px;\n    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);\n    color: #fff;\n    background: #00acc1; }\n    .control-panel .button:hover, .control-panel .button:focus {\n      background: #00c3db; }\n  .control-panel .instruction-button {\n    margin-right: 0.5rem; }\n  .control-panel .reset-button {\n    margin-top: 0.5rem;\n    padding: 0;\n    border: 0;\n    background: none;\n    text-decoration: underline;\n    color: #00acc1; }\n    .control-panel .reset-button:hover, .control-panel .reset-button:focus {\n      color: #00c3db; }\n  .control-panel .submit-area {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    width: 100%;\n    padding: 1rem;\n    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n    background: #fff; }\n  .control-panel .debug-input {\n    margin-bottom: 0.75rem; }\n  .control-panel input[type=\"checkbox\"] + label {\n    margin-left: 0.25rem; }\n\n.instructions {\n  margin-top: 1.5rem; }\n  .instructions .heading {\n    font-size: 1rem;\n    font-weight: 500; }\n  .instructions .added-instructions {\n    padding: 0.5rem;\n    border: 1px dashed #ccc;\n    border-radius: 4px; }\n    .instructions .added-instructions ol {\n      padding: 0;\n      list-style: none; }\n    .instructions .added-instructions li {\n      display: inline; }\n\n.report-message {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 2;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.5); }\n  .report-message .heading {\n    margin: 1rem 0 1.5rem;\n    font-weight: 500; }\n  .report-message .content {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    width: 90%;\n    max-width: 30rem;\n    padding: 1rem;\n    transform: translate(-50%, -50%);\n    border-radius: 2rem;\n    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);\n    text-align: center;\n    background: #fff; }\n  .report-message .message {\n    font-weight: 500;\n    font-size: 2rem; }\n", ""]);
 
 	// exports
 

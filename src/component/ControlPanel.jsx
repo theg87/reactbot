@@ -17,8 +17,8 @@ export default class ControlPanel extends React.Component {
     super(props);
 
     this.state = {
-      shape: '',
-      size: 5,
+      shape: 'square',
+      size: 10,
       startPosX: 1,
       startPosY: 1,
       language: 'sv',
@@ -38,9 +38,8 @@ export default class ControlPanel extends React.Component {
     const state = { [type]: value };
 
     if (type === 'shape') {
-      const isSquare = value === 'square';
-      state.size = isSquare ? 5 : 10;
-      state.startPosX = isSquare ? 1 : 0;
+      state.size = 10;
+      state.startPosX =  value === 'square' ? 1 : 0;
       state.startPosY = state.startPosX;
     }
 
@@ -140,7 +139,6 @@ export default class ControlPanel extends React.Component {
       );
     };
 
-    const roomConfigDisplay = shape === '' ? 'none' : 'block';
     const resetButtonDisplay = instructions.length ? 'block' : 'none';
 
     return (
@@ -156,46 +154,43 @@ export default class ControlPanel extends React.Component {
                 value={shape}
                 onChange={evt => this.handleChange(evt, 'shape')}
               >
-                <option value="">-- Choose --</option>
                 <option value="square">Square</option>
                 <option value="circular">Circular</option>
               </select>
             </div>
 
-            <div style={{ display: roomConfigDisplay }}>
-              <div className="size">
-                <label htmlFor="size">Size</label>
-                <input
-                  id="size"
-                  type="number"
-                  min="1"
-                  max="100"
-                  value={size}
-                  onChange={evt => this.handleChange(evt, 'size')}
-                />
-              </div>
+            <div className="size">
+              <label htmlFor="size">Size</label>
+              <input
+                id="size"
+                type="number"
+                min="1"
+                max="100"
+                value={size}
+                onChange={evt => this.handleChange(evt, 'size')}
+              />
+            </div>
 
-              <div className="start-position">
-                <h2 className="heading">Start position</h2>
+            <div className="start-position">
+              <h2 className="heading">Start position</h2>
 
-                <label htmlFor="x">x</label>
-                <input
-                  id="x"
-                  type="number"
-                  min="0"
-                  value={startPosX}
-                  onChange={evt => this.handleChange(evt, 'startPosX')}
-                />
+              <label htmlFor="x">x</label>
+              <input
+                id="x"
+                type="number"
+                min="0"
+                value={startPosX}
+                onChange={evt => this.handleChange(evt, 'startPosX')}
+              />
 
-                <label htmlFor="y">y</label>
-                <input
-                  id="y"
-                  type="number"
-                  min="0"
-                  value={startPosY}
-                  onChange={evt => this.handleChange(evt, 'startPosY')}
-                />
-              </div>
+              <label htmlFor="y">y</label>
+              <input
+                id="y"
+                type="number"
+                min="0"
+                value={startPosY}
+                onChange={evt => this.handleChange(evt, 'startPosY')}
+              />
             </div>
           </fieldset>
 
