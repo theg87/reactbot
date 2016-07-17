@@ -9,6 +9,7 @@ import ReportMessage from './ReportMessage.jsx';
 // Create new instance of Reactbot
 const reactbot = new Reactbot();
 
+// Counter used for React keys
 let instructionId = 0;
 
 export default class ControlPanel extends React.Component {

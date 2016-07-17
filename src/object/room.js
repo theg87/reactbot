@@ -19,6 +19,12 @@ export default class Room {
     this.startPosition = startPosition || (shape === 'square' ? { x: 1, y: 1 } : { x: 0, y: 0 });
 
     this.points = this.setPoints({ shape, size });
+
+    if (!this.contains(startPosition)) {
+      const errorMessage = `Start position ${startPosition.x} ${startPosition.y} is not within the room's boundaries`;
+      alert(errorMessage);
+      throw new Error(errorMessage);
+    }
   }
 
   /**

@@ -30,19 +30,19 @@ test('Reactbot', t => {
   t.test('will read and execute a string of instructions', t => {
     let room = new Room('square', 5, { x: 1, y: 2 });
     reactbot.configure({ room, language: 'sv' });
-    t.equal(reactbot.execute('HGHGGHGHG'), '1 3 N', 'Executes instructions correctly');
-
-    room = new Room('circular', 10);
-    reactbot.configure({ room, language: 'en' });
-    t.equal(reactbot.execute('RRFLFFLRF'), '3 1 E', 'Executes instructions correctly');
+    t.equal(reactbot.execute('HGHGGHGHG'), '1 3 N', 'Executes instructions correctly (square room, Swedish)');
 
     room = new Room('circular', 8, { x: -3, y: 2 });
     reactbot.configure({ room, language: 'sv' });
-    t.equal(reactbot.execute('VVGHGGHGV'), '-5 2 W', 'Executes instructions correctly');
+    t.equal(reactbot.execute('VVGHGGHGV'), '-5 2 W', 'Executes instructions correctly (circular room, Swedish)');
 
     room = new Room('square', 3, { x: 3, y: 1 });
     reactbot.configure({ room, language: 'en' });
-    t.equal(reactbot.execute('RFRFFFFRFRRLR'), '2 3 E', 'Executes instructions correctly');
+    t.equal(reactbot.execute('RFRFFFFRFRRLR'), '2 3 E', 'Executes instructions correctly (square room, English)');
+
+    room = new Room('circular', 10);
+    reactbot.configure({ room, language: 'en' });
+    t.equal(reactbot.execute('RRFLFFLRF'), '3 1 E', 'Executes instructions correctly (circular room, English)');
 
     t.end();
   });

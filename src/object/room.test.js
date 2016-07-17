@@ -1,6 +1,8 @@
 import test from 'tape';
 import Room from './Room';
 
+global.alert = () => {};
+
 test('Room', t => {
   t.test('will have configurable startPosition property with default values', t => {
     let room = new Room();
@@ -13,7 +15,7 @@ test('Room', t => {
     
     const startPosition = { x: 3, y: 5 };
 
-    room = new Room('square', 1, startPosition);
+    room = new Room('square', 5, startPosition);
 
     t.deepEqual(room.getStartPosition(), startPosition, 'Property startPosition is configured correctly');
 
@@ -97,6 +99,18 @@ test('Room', t => {
     unexpectedPoints.forEach(point => {
       t.notOk(room.contains(point), `Does not contain point (${point.x}, ${point.y})`);
     });
+
+    t.end();
+  });
+
+  t.test('will throw error if provided arguments are invalid', t => {
+    t.throws(() => new Room('triangle'), 'Throws error when passing invalid shape');
+    t.throws(() => new Room('square', 0), 'Throws error when passing 0 as size');
+    t.throws(() => new Room('square', -1), 'Throws error when passing negative size');
+    t.throws(() => new Room('square', 101), 'Throws error when passing size larger than 100');
+    t.throws(() => new Room('square', 'abc'), 'Throws error when passing a string as size');
+    t.throws(() => new Room('square', 2, { x: 0, y: 1 }), 'Throws error when passing invalid startPosition (square room)');
+    t.throws(() => new Room('circular', 3, { x: 4, y: -5 }), 'Throws error when passing invalid startPosition (circular room)');
 
     t.end();
   });
