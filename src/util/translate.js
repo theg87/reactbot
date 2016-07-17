@@ -5,7 +5,9 @@
  * @return {String}
  */
 export default function translate(string, language) {
-  if (language === 'en') return string;
+  if (language !== 'sv' || typeof string !== 'string') {
+    return typeof string === 'string' ? string : '';
+  }
 
   let translatedString;
 
@@ -23,5 +25,5 @@ export default function translate(string, language) {
       translatedString = string;
   }
 
-  return translatedString;
+  return translatedString || '';
 }

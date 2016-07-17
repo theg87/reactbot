@@ -13,7 +13,7 @@ let counter = 0;
  * @param {String} namespace
  * @return {Function}
  */
-export default function logger(namespace) {
+export default function logger(namespace = 'Default') {
   // Reset counter if it exceeds the length of the colors array
   // (minus 1 because zero-based)
   if (counter > colors.length - 1) counter = 0;
