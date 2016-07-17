@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Room Generator</title>
+    <style>
+      body {
+        white-space: nowrap;
+        font-family: "Times New Roman", Times, serif;
+      }
+
+      .input {
+        margin-bottom: 16px;
+      }
+
+      .row {
+        overflow: hidden;
+      }
+
+      span {
+        display: block;
+        float: left;
+        width: 30px;
+        height: 30px;
+        border: 1px solid #000;
+        line-height: 30px;
+        font-size: 9px;
+        overflow: hidden;
+        text-align: center;
+      }
+
+      .inside {
+        color: #212121;
+        background: #76ff03;
+      }
+
+      .outside {
+        color: #fff;
+        background: #424242;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="input">
+      <label for="radius">Radius</label>
+      <input type="number" id="radius" min="5" max="15" value="12" />
+      <button type="button" id="submit-button">Go</button>
+    </div>
+
+    <div id="room"></div>
+
+    <script>
+      var room = document.getElementById('room');
+      var input = document.getElementById('radius');
+      var radius = 12;
+
+      // Part of this function is taken from http://codepen.io/anon/pen/rLpJrq
+      function generate(radius) {
+        var size = radius * 2;
+        var center = size / 2 - 1;
+        var rows = [];
+
+        for (var x = 0; x < size; x++) {
+          var cols = [];
+
+          for (var y = 0; y < size; y++) {
+            var isInside = Math.pow((x - center), 2) + Math.pow((y - center), 2) < Math.pow(radius, 2);
+
+            cols.push(isInside ? '<span class="inside">' + (y - radius + 1) + ', ' + (x - radius + 1) + '</span>' : '<span class="outside">' + (y - radius + 1) + ', ' + (x - radius + 1) + '</span>');
+          }
+
+          rows.push(cols);
+        }
+
+        room.innerHTML = rows.map(row => '<div class="row">' + row.join(' ') + '</div>').join('');
+        room.style.width = (size * document.querySelector('.inside').offsetWidth) + 'px';
+      }
+
+      generate(radius);
+
+      document.getElementById('submit-button').addEventListener('click', function () {
+        generate(input.value);
+      });
+    </script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 # Reactbot
 *A guidance system for one of the smartest robots in the world!*
 
-To run the project, simply open index.html in a web browser. The following browsers have been tested:
+To run the project, simply open index.html in a web browser. It has been tested in the following browsers:
 
 * Internet Explorer 9 on Windows 7
 * Internet Explorer 10 on Windows 7
@@ -20,3 +20,7 @@ To run the project, simply open index.html in a web browser. The following brows
 1. Make sure you have [Node.js](https://nodejs.org/en/download/) and [npm](https://docs.npmjs.com/getting-started/what-is-npm) installed on your computer.
 2. Run `npm install` in the project folder to install the required dependencies.
 3. Run `npm test` in the project folder to run the tests.
+
+## Bonus: Room Generator
+
+Open room.html in a web browser to try out the room generator. It's based on the same code that calculates what points are contained in circular rooms in the Reactbot app. Please note that the room generator only has been tested in Chrome 51 and Firefox 47 on Windows 10.
