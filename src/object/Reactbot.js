@@ -162,7 +162,7 @@ export default class Reactbot {
     const cardinalDirection = this.getCardinalDirection(rotation, true);
     const finalReport = `${x} ${y} ${cardinalDirection}`;
 
-    reactbotLogger(`Final report: ${finalReport}`);
+    this.log(`Final report: ${finalReport}`);
 
     return finalReport;
   }
