@@ -7,28 +7,32 @@ module.exports = {
   module: {
     preLoaders: [
       {
-        test: /\.js$/,
-        loader: "eslint-loader",
-        exclude: /node_modules/
-      }
+        test: /\.jsx?$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+      },
     ],
     loaders: [
       {
         test: /.scss$/,
-        loaders: ['style', 'css', 'sass']
+        loaders: ['style', 'css', 'sass'],
       },
-      { 
+      {
+        test: /.json/,
+        loader: 'json-loader',
+      },
+      {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [ 'url?limit=10000', 'img?minimize' ]
+        loaders: [ 'url?limit=10000', 'img?minimize' ],
       },
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react']
-        }
-      }
-    ]
+          presets: ['es2015', 'react'],
+        },
+      },
+    ],
   },
 };

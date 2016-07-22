@@ -10,11 +10,11 @@ const WEST = 270;
 
 export default class Reactbot {
   constructor() {
-    this.language = 'sv';
     this.x = 0;
     this.y = 0;
     this.rotation = NORTH;
     this.room = null;
+    this.translate = null;
     this.debug = false;
   }
 
@@ -22,11 +22,11 @@ export default class Reactbot {
    * Configures object
    * @param {Object}
    */
-  configure({ language, room, debug }) {
-    if (language) this.language = language;
+  configure({ room, translate, debug }) {
     this.debug = debug;
     this.rotation = NORTH;
     this.room = room;
+    this.translate = translate;
 
     const startPosition = room.getStartPosition();
     this.x = startPosition.x;
@@ -42,27 +42,26 @@ export default class Reactbot {
     for (let i = 0, len = instructions.length; i < len; i++) {
       const instruction = instructions.charAt(i);
 
-      if (
-        (this.language === 'sv' && instruction === 'G') ||
-        (this.language === 'en' && instruction === 'F')
-      ) {
-        this.moveForward();
-      } else if (
-        (this.language === 'sv' && instruction === 'V') ||
-        (this.language === 'en' && instruction === 'L')
-      ) {
-        this.rotate('left');
-      } else if (
-        (this.language === 'sv' && instruction === 'H') ||
-        (this.language === 'en' && instruction === 'R')
-      ) {
-        this.rotate('right');
-      } else {
-        if (this.debug) reactbotLogger(`Did not understand instruction '${instruction}'`);
+      switch (this.translate(instruction)) {
+        case 'F':
+          this.moveForward();
+          break;
+        case 'L':
+          this.turnLeft();
+          break;
+        case 'R':
+          this.turnRight();
+          break;
+        default:
+          this.log(`Did not understand instruction '${instruction}'`);
       }
     }
 
-    return this.report(this.x, this.y, this.rotation);
+    return this.getReport(this.x, this.y, this.rotation);
+  }
+
+  log(message) {
+    if (this.debug) reactbotLogger(message);
   }
 
   /**
@@ -91,32 +90,36 @@ export default class Reactbot {
     if (this.room.contains(newPosition)) {
       this.x = newPosition.x;
       this.y = newPosition.y;
-      if (this.debug) reactbotLogger(`Moving to position ${this.x} ${this.y}`);
+      this.log(`Moving to position ${this.x} ${this.y}`);
     } else {
-      if (this.debug) reactbotLogger('Reached a wall. I\'m a robot, not a ghost!');
+      this.log('Reached a wall. I\'m a robot, not a ghost!');
     }
   }
 
   /**
-   * Rotates Reactbot to the left or right
-   * @param {String} direction
+   * Rotates Reactbot to the left
    */
-  rotate(direction) {
-    if (direction === 'left') {
-      if (this.rotation === NORTH) {
-        this.rotation = WEST;
-      } else {
-        this.rotation -= 90;
-      }
-    } else if (direction === 'right') {
-      if (this.rotation === WEST) {
-        this.rotation = NORTH;
-      } else {
-        this.rotation += 90;
-      }
+  turnLeft() {
+    if (this.rotation === NORTH) {
+      this.rotation = WEST;
+    } else {
+      this.rotation -= 90;
     }
 
-    if (this.debug) reactbotLogger(`Turning ${direction}, now facing ${this.getCardinalDirection(this.rotation)}`);
+    if (this.debug) this.log(`Turning left, now facing ${this.getCardinalDirection(this.rotation)}`);
+  }
+
+  /**
+   * Rotates Reactbot to the right
+   */
+  turnRight() {
+    if (this.rotation === WEST) {
+      this.rotation = NORTH;
+    } else {
+      this.rotation += 90;
+    }
+
+    if (this.debug) this.log(`Turning right, now facing ${this.getCardinalDirection(this.rotation)}`);
   }
 
   /**
@@ -155,11 +158,11 @@ export default class Reactbot {
    * @param {Number} rotation
    * @return {String}
    */
-  report(x, y, rotation) {
+  getReport(x, y, rotation) {
     const cardinalDirection = this.getCardinalDirection(rotation, true);
     const finalReport = `${x} ${y} ${cardinalDirection}`;
 
-    if (this.debug) reactbotLogger(`Final report: ${finalReport}`);
+    reactbotLogger(`Final report: ${finalReport}`);
 
     return finalReport;
   }

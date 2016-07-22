@@ -1,16 +1,16 @@
 import React from 'react';
-import _reduce from 'lodash/reduce';
-import t from '../util/translate';
-import Room from '../object/Room';
+import _invert from 'lodash/invert';
+import translate from '../util/translate';
+import sv from '../../l10n/sv.json';
+import es from '../../l10n/es.json';
+import { SquareRoom, CircularRoom } from '../object/Room';
 import Reactbot from '../object/Reactbot';
-import Instructions from './Instructions.jsx';
 import ReportMessage from './ReportMessage.jsx';
 
 // Create new instance of Reactbot
 const reactbot = new Reactbot();
 
-// Counter used for React keys
-let instructionId = 0;
+const DEFAULT_LANGUAGE = 'en';
 
 export default class ControlPanel extends React.Component {
   constructor(props) {
@@ -19,10 +19,11 @@ export default class ControlPanel extends React.Component {
     this.state = {
       shape: 'square',
       size: 10,
-      startPosX: 1,
-      startPosY: 1,
-      language: 'sv',
-      instructions: [],
+      infinite: false,
+      startPosX: 0,
+      startPosY: 0,
+      language: 'en',
+      instructions: '',
       report: '',
       debug: false,
     };
@@ -31,18 +32,30 @@ export default class ControlPanel extends React.Component {
   }
 
   /**
+   * Returns translated string
+   * @param {String} string
+   * @param {String} language
+   * @return {String}
+   */
+  getTranslation(string, language) {
+    if (language === DEFAULT_LANGUAGE) return string;
+    const strings = { sv, es };
+    return _invert(strings[language])[string];
+  }
+
+  /**
    * Handles input changes
    * @param {Object} evt
    * @param {String} type
    */
   handleChange(evt, type) {
-    const value = type === 'debug' ? evt.target.checked : evt.target.value;
+    const value = type === 'debug' || type === 'infinite' ? evt.target.checked : evt.target.value;
     const state = { [type]: value };
 
     if (type === 'shape') {
       state.size = 10;
-      state.startPosX =  value === 'square' ? 1 : 0;
-      state.startPosY = state.startPosX;
+      state.startPosX = 0;
+      state.startPosY = 0;
     }
 
     this.setState(state);
@@ -55,9 +68,9 @@ export default class ControlPanel extends React.Component {
   handleSubmit(evt) {
     evt.preventDefault();
 
-    const { 
+    const {
       shape,
-      size,
+      infinite,
       startPosX,
       startPosY,
       language,
@@ -65,24 +78,34 @@ export default class ControlPanel extends React.Component {
       debug,
     } = this.state;
 
-    const instructionString = _reduce(instructions, (result, instruction) => {
-      return result + t(instruction.value, language);
-    }, '');
+    const size = infinite ? 'infinite' : this.state.size;
 
     const startPosition = {
       x: parseInt(startPosX, 10),
       y: parseInt(startPosY, 10),
     };
 
-    const room = new Room(shape, size, startPosition, debug);
+    let room;
+
+    switch (shape) {
+      case 'square':
+        room = new SquareRoom(size, startPosition, debug);
+        break;
+      case 'circular':
+        room = new CircularRoom(size, startPosition, debug);
+        break;
+      default:
+        return;
+    }
 
     reactbot.configure({
-      language,
       room,
+      translate: translate(language),
       debug,
     });
 
-    const report = reactbot.execute(instructionString);
+    const report = reactbot.execute(instructions);
+
     this.setState({
       report,
     }, () => {
@@ -92,27 +115,14 @@ export default class ControlPanel extends React.Component {
   }
 
   /**
-   * Adds instruction to the instructions array
-   * @param {String} value
-   */
-  addInstruction(value) {
-    this.setState(state => ({
-      instructions: state.instructions.concat([{ 
-        id: instructionId++, 
-        value,
-      }]),
-    }));
-  }
-
-  /**
-   * Clears the instructions array
+   * Clears the instructions string
    */
   resetInstructions() {
-    this.setState({ instructions: [] });
+    this.setState({ instructions: '' });
   }
 
   /**
-   * Sets report to empty string, which will close the report message
+   * Sets state.report to empty string, which will close the report message
    */
   closeReportMessage() {
     this.setState({
@@ -123,34 +133,11 @@ export default class ControlPanel extends React.Component {
   }
 
   render() {
-    const {
-      shape,
-      size,
-      startPosX,
-      startPosY,
-      language,
-      instructions,
-      report,
-      debug,
-    } = this.state;
-
-    const f = t('F', language);
-    const l = t('L', language);
-    const r = t('R', language);
-
-    const instructionButton = (instruction, translation) => {
-      return (
-        <button
-          type="button"
-          className="button instruction-button"
-          onClick={() => this.addInstruction(instruction)}
-        >
-          {translation}
-        </button>
-      );
-    };
-
-    const resetButtonDisplay = instructions.length ? 'block' : 'none';
+    const { shape, size, infinite, startPosX, startPosY, language, instructions, report } = this.state;
+    const resetButtonDisplay = instructions !== '' ? 'block' : 'none';
+    const f = this.getTranslation('F', language);
+    const l = this.getTranslation('L', language);
+    const r = this.getTranslation('R', language);
 
     return (
       <div className="control-panel">
@@ -179,6 +166,7 @@ export default class ControlPanel extends React.Component {
                 max="100"
                 value={size}
                 onChange={evt => this.handleChange(evt, 'size')}
+                disabled={infinite}
               />
               {
                 shape === 'square' ?
@@ -186,6 +174,8 @@ export default class ControlPanel extends React.Component {
                 :
                   <span className="text-small text-light">(radius)</span>
               }
+              <input id="infinite" type="checkbox" value={this.state.infinite} onChange={evt => this.handleChange(evt, 'infinite')} />
+              <label htmlFor="infinite">Infinite</label>
             </div>
 
             <div className="start-position">
@@ -195,8 +185,6 @@ export default class ControlPanel extends React.Component {
               <input
                 id="x"
                 type="number"
-                min="-100"
-                max="100"
                 value={startPosX}
                 onChange={evt => this.handleChange(evt, 'startPosX')}
               />
@@ -205,8 +193,6 @@ export default class ControlPanel extends React.Component {
               <input
                 id="y"
                 type="number"
-                min="-100"
-                max="100"
                 value={startPosY}
                 onChange={evt => this.handleChange(evt, 'startPosY')}
               />
@@ -222,8 +208,9 @@ export default class ControlPanel extends React.Component {
               value={language}
               onChange={evt => this.handleChange(evt, 'language')}
             >
-              <option value="sv">Swedish</option>
               <option value="en">English</option>
+              <option value="sv">Swedish</option>
+              <option value="es">Spanish</option>
             </select>
           </fieldset>
 
@@ -236,13 +223,13 @@ export default class ControlPanel extends React.Component {
               <b>{r}</b> = Turn right
             </p>
 
-            {instructionButton('F', f)}
-            {instructionButton('L', l)}
-            {instructionButton('R', r)}
-
-            <Instructions
-              instructions={instructions}
-              language={language}
+            <label htmlFor="instructions" className="structural">Enter instructions here</label>
+            <input
+              id="instructions"
+              type="text"
+              value={instructions}
+              onChange={evt => this.handleChange(evt, 'instructions')}
+              placeholder="Enter instructions here"
             />
 
             <button
@@ -263,7 +250,9 @@ export default class ControlPanel extends React.Component {
                 value={this.state.debug}
                 onChange={(evt) => this.handleChange(evt, 'debug')}
               />
-              <label htmlFor="debug">Debug mode <span className="text-small text-light">(Open the console in your browser to see debug messages)</span></label>
+              <label htmlFor="debug">
+                Debug mode <span className="text-small text-light">(Open the console in your browser to see debug messages)</span>
+              </label>
             </div>
 
             <button type="submit" className="button">Execute</button>
