@@ -22049,7 +22049,7 @@
 	      var cardinalDirection = this.getCardinalDirection(rotation, true);
 	      var finalReport = x + ' ' + y + ' ' + cardinalDirection;
 
-	      reactbotLogger('Final report: ' + finalReport);
+	      this.log('Final report: ' + finalReport);
 
 	      return finalReport;
 	    }
